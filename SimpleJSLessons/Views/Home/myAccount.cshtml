@@ -1,0 +1,25 @@
+﻿@model ApiUser
+<br /><br />
+      <div class="container">
+          <p>Hello @ViewBag.firstName</p>
+          <p>Your Saved Demo's</p>
+          <div class="container d-flex">
+            @foreach (UserSavedDemos demo in Model.UserSavedDemos)
+            {
+                var url = "/?key=" + demo.DemoHash.ToString();
+                <div class="card" style="padding: 20px">
+                  <a href="@url"><p>@demo.DemoTitle</p></a>
+                </div>
+            }
+          </div>
+          <p>Your completed Lessons</p>
+          <div class="container d-flex">
+              @foreach (UserSavedLessons lesson in Model.UserSavedLessons)
+              {
+                  var url = "/?key=" + lesson.LessonHash.ToString();
+                  <div class="card" style="padding: 20px">
+                      <a href="@url"><p>@lesson.LessonTitle</p></a>
+                  </div>
+              }
+          </div>
+      </div>

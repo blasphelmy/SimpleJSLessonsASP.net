@@ -1,0 +1,50 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - SimpleJSLessons</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+    <script src="~/js/scripts.js" asp-append-version="true"></script>
+    <script src="~/js/cookies.js" asp-append-version="true"></script>
+</head>
+<body class="d-flex flex-column min-vh-100">
+    <header>
+        <nav class="navbar navbar-dark navbar-expand-md" id="navBar" style="background: rgb(61, 61, 61);color: rgb(224,224,224);padding: 15px;">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="/" style="color: rgba(255,255,255,0.9);font-size: 30px;">JS Lessons</a>
+                <div class="collapse navbar-collapse" id="navcol-1">
+                    <ul class="navbar-nav">
+                        @if (ViewBag.firstName != null)
+                        {
+                             <li class="nav-item"><a class="nav-link active" href="/home/myAccount" style="color: rgb(97,161,255);">Hello @ViewBag.firstName</a></li>
+                        }
+                        else
+                        {
+                            <li class="nav-item"><a class="nav-link active" href="/home/createAccount" style="color: rgb(97,161,255);">Create Account</a></li>
+                        }
+                        <li class="nav-item"><a class="nav-link active" href="/?key=6722237685994171" style="color: rgb(97,161,255);">Create Demo</a></li>
+                        <li class="nav-item">
+                            <a class="nav-link active" href="" style="color: rgb(97,161,255);">
+                                Create
+                                Lesson
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <input class="form-control-sm" id="searchField" type="search" style="margin-left: 0px; margin-top: 1px; border-radius: 10px; border-style: none;" placeholder="Search ie : 305502808432711"><button class="btn btn-primary btn-sm" id="searchButton" type="button" style="margin-left: 10px;border-radius: 10px;height: 31px;">Search</button><button class="navbar-toggler" data-bs-target="#navcol-1" data-bs-toggle="collapse"><span class="visually-hidden">Toggle navigation</span><span class="navbar-dark navbar-toggler-icon"></span></button>
+            </div>
+        </nav>
+    </header>
+            @RenderBody()
+    <footer id="footer" class="footer text-muted bg-dark text-white mt-auto" style="position: relative; background-color: rgb(71, 71, 71)!important">
+        <div class="container">
+            &copy; 2022 - SimpleJSLessons - <a href="https://blasphelmy.github.io">&copy;blasphelmy</a>
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

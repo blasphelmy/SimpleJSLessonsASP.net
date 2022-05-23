@@ -1,0 +1,22 @@
+﻿** Highlights
+     Tables that will be rebuilt
+       None
+     Clustered indexes that will be dropped
+       None
+     Clustered indexes that will be created
+       None
+     Possible data issues
+       None
+
+** User actions
+     Create
+       [dbo].[apiUser] (Table)
+       [dbo].[apiUserInformation] (Table)
+       [dbo].[SessionModel] (Table)
+       [dbo].[UserSavedDemos] (Table)
+       [dbo].[userSavedLessons] (Table)
+       [dbo].[fk_userdata_to_user] (Foreign Key)
+       [dbo].[fk_demoHash_to_user] (Foreign Key)
+       [dbo].[fk_lessonHash_to_user] (Foreign Key)
+
+** Supporting actions
