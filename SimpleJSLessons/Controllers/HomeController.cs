@@ -168,7 +168,7 @@ namespace SimpleJSLessons.Controllers
             if(data.type == "demo" || data.type == "lessonAnswers" || data.type == "lesson")
             {
                 DataModel newData = data;
-                newData.hashcode = ComputeSha256Hash(newData.data).Substring(0, 5);
+                newData.hashcode = ComputeSha256Hash(newData.data).Substring(0, 6);
                 string cookieValueFromReq = Request.Cookies["sessionid"];
                 string accountHash = "";
                 try
@@ -225,6 +225,12 @@ namespace SimpleJSLessons.Controllers
                 }
             }
             return Json(-1);
+        }
+        [HttpPost]
+        public IActionResult requestData([FromBody] DataRequest dataHash)
+        {
+            string data = context.DataTable.FirstOrDefault(data => data.DataHash == dataHash.dataHash).Data;
+            return Json(data); 
         }
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

@@ -1,12 +1,5 @@
 ﻿var targetElement;
-var labID = function () {
-    try {
-        var number = Number((window.location.href).split('?')[1].split('=')[1]);
-    } catch (error) {
-        return 268945738906855;
-    }
-    return number;
-};
+var urlParameters = new Map();
 window.onmessage = function (e) {
     console.log("top level window");
     console.log(e.data);
@@ -26,14 +19,16 @@ window.onmessage = function (e) {
         console.log(data);
     });
  };
-var currentLabID = labID();
 window.onload = function () {
+    extractURLParems();
     targetElement = document.getElementById("iFrameMain");
     console.log(targetElement);
+    currentLabID = urlParameters.get("key");
     var offSet = document.getElementById("navBar").offsetHeight;
     var offSet = document.getElementById("navBar").offsetHeight + document.getElementById("footer").offsetHeight;
     fillVerticalHeight(targetElement, offSet);
-    targetElement.src = `https://blasphelmy.github.io/SimpleJSLessons/Interactive-JS-Lessons/?key=${currentLabID}`;
+    targetElement.src = `https://blasphelmy.github.io/SimpleJSLessons/Interactive-JS-Lessons/?key=${currentLabID}&server=asp`;
+    //targetElement.src = `http://127.0.0.1:5502/?key=${currentLabID}&server=asp`;
     document.getElementById("searchButton").addEventListener("click", function () {
         var newLabID = document.getElementById("searchField").value;
         if (window.location.href.match("simplejsclasses")) {
@@ -56,5 +51,16 @@ function fillVerticalHeight(targetElement, offsetHeight) {
         }
     } else {
         targetElement.style.height = (window.innerHeight - offsetHeight) + "px";
+    }
+}
+function extractURLParems() {
+    try {
+        let parameters = window.location.href.split("?")[1].split("&");
+        for (parameter of parameters) {
+            let keyValue = parameter.split("=");
+            urlParameters.set(keyValue[0], keyValue[1]);
+        }
+    } catch (error) {
+        console.log(error);
     }
 }
