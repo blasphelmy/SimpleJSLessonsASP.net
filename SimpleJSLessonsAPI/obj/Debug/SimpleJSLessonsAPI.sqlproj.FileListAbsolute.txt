@@ -17,4 +17,3 @@ C:\Users\David Nguyen\Desktop\gitHub\SimpleJSLessonsASP.net\SimpleJSLessonsAPI\o
 C:\Users\David Nguyen\Desktop\gitHub\SimpleJSLessonsASP.net\SimpleJSLessonsAPI\obj\Debug\refactor.xml
 C:\Users\David Nguyen\Desktop\gitHub\SimpleJSLessonsASP.net\SimpleJSLessonsAPI\obj\Debug\postdeploy.sql
 C:\Users\David Nguyen\Desktop\gitHub\SimpleJSLessonsASP.net\SimpleJSLessonsAPI\obj\Debug\predeploy.sql
-C:\Users\David Nguyen\Desktop\gitHub\SimpleJSLessonsASP.net\SimpleJSLessonsAPI\obj\Debug\SimpleJSLessonsAPI.sqlprojAssemblyReference.cache

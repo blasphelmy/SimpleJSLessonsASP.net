@@ -18,6 +18,7 @@ namespace SimpleJSLessons.data
 
         public virtual DbSet<ApiUser> ApiUser { get; set; }
         public virtual DbSet<ApiUserInformation> ApiUserInformation { get; set; }
+        public virtual DbSet<Authors> Authors { get; set; }
         public virtual DbSet<DataTable> DataTable { get; set; }
         public virtual DbSet<SessionModel> SessionModel { get; set; }
         public virtual DbSet<UserSavedDemos> UserSavedDemos { get; set; }
@@ -37,11 +38,11 @@ namespace SimpleJSLessons.data
             modelBuilder.Entity<ApiUser>(entity =>
             {
                 entity.HasIndex(e => e.AccountHash)
-                    .HasName("UQ__apiUser__2EEAD09C5C60E1F9")
+                    .HasName("UQ__apiUser__2EEAD09C17FAB59F")
                     .IsUnique();
 
                 entity.HasIndex(e => e.Username)
-                    .HasName("UQ__apiUser__F3DBC57291B163ED")
+                    .HasName("UQ__apiUser__F3DBC572777B13DE")
                     .IsUnique();
 
                 entity.Property(e => e.AccountHash).IsUnicode(false);
@@ -52,7 +53,7 @@ namespace SimpleJSLessons.data
             modelBuilder.Entity<ApiUserInformation>(entity =>
             {
                 entity.HasIndex(e => e.AccountHash)
-                    .HasName("UQ__apiUserI__2EEAD09C0115DA3C")
+                    .HasName("UQ__apiUserI__2EEAD09C04DAD1C0")
                     .IsUnique();
 
                 entity.Property(e => e.AccountHash).IsUnicode(false);
@@ -73,13 +74,25 @@ namespace SimpleJSLessons.data
                     .HasConstraintName("fk_userdata_to_user");
             });
 
+            modelBuilder.Entity<Authors>(entity =>
+            {
+                entity.Property(e => e.DataHash).IsUnicode(false);
+
+                entity.Property(e => e.Username).IsUnicode(false);
+
+                entity.HasOne(d => d.DataHashNavigation)
+                    .WithMany(p => p.Authors)
+                    .HasPrincipalKey(p => p.DataHash)
+                    .HasForeignKey(d => d.DataHash)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("AuthorsToData");
+            });
+
             modelBuilder.Entity<DataTable>(entity =>
             {
                 entity.HasIndex(e => e.DataHash)
-                    .HasName("UQ__DataTabl__13869B63B4953385")
+                    .HasName("UQ__DataTabl__13869B63466FCC8A")
                     .IsUnique();
-
-                entity.Property(e => e.Author).IsUnicode(false);
 
                 entity.Property(e => e.Data).IsUnicode(false);
 

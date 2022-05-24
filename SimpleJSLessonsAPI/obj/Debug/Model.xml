@@ -158,13 +158,13 @@
 			</Relationship>
 			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="8" />
 		</Element>
-		<Element Type="SqlUniqueConstraint">
+		<Element Type="SqlPrimaryKeyConstraint">
 			<Relationship Name="ColumnSpecifications">
 				<Entry>
 					<Element Type="SqlIndexedColumnSpecification">
 						<Relationship Name="Column">
 							<Entry>
-								<References Name="[dbo].[apiUser].[accountHash]" />
+								<References Name="[dbo].[Authors].[Id]" />
 							</Entry>
 						</Relationship>
 					</Element>
@@ -172,7 +172,7 @@
 			</Relationship>
 			<Relationship Name="DefiningTable">
 				<Entry>
-					<References Name="[dbo].[apiUser]" />
+					<References Name="[dbo].[Authors]" />
 				</Entry>
 			</Relationship>
 			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="9" />
@@ -183,7 +183,7 @@
 					<Element Type="SqlIndexedColumnSpecification">
 						<Relationship Name="Column">
 							<Entry>
-								<References Name="[dbo].[apiUser].[username]" />
+								<References Name="[dbo].[apiUser].[accountHash]" />
 							</Entry>
 						</Relationship>
 					</Element>
@@ -202,6 +202,25 @@
 					<Element Type="SqlIndexedColumnSpecification">
 						<Relationship Name="Column">
 							<Entry>
+								<References Name="[dbo].[apiUser].[username]" />
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+			</Relationship>
+			<Relationship Name="DefiningTable">
+				<Entry>
+					<References Name="[dbo].[apiUser]" />
+				</Entry>
+			</Relationship>
+			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="11" />
+		</Element>
+		<Element Type="SqlUniqueConstraint">
+			<Relationship Name="ColumnSpecifications">
+				<Entry>
+					<Element Type="SqlIndexedColumnSpecification">
+						<Relationship Name="Column">
+							<Entry>
 								<References Name="[dbo].[apiUserInformation].[accountHash]" />
 							</Entry>
 						</Relationship>
@@ -213,7 +232,7 @@
 					<References Name="[dbo].[apiUserInformation]" />
 				</Entry>
 			</Relationship>
-			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="11" />
+			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="12" />
 		</Element>
 		<Element Type="SqlUniqueConstraint">
 			<Relationship Name="ColumnSpecifications">
@@ -232,7 +251,7 @@
 					<References Name="[dbo].[DataTable]" />
 				</Entry>
 			</Relationship>
-			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="12" />
+			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="13" />
 		</Element>
 		<Element Type="SqlTable" Name="[dbo].[apiUser]">
 			<Property Name="IsAnsiNullsOn" Value="True" />
@@ -270,7 +289,7 @@
 								</Element>
 							</Entry>
 						</Relationship>
-						<AttachedAnnotation Disambiguator="9" />
+						<AttachedAnnotation Disambiguator="10" />
 					</Element>
 				</Entry>
 				<Entry>
@@ -288,7 +307,7 @@
 								</Element>
 							</Entry>
 						</Relationship>
-						<AttachedAnnotation Disambiguator="10" />
+						<AttachedAnnotation Disambiguator="11" />
 					</Element>
 				</Entry>
 				<Entry>
@@ -350,7 +369,7 @@
 								</Element>
 							</Entry>
 						</Relationship>
-						<AttachedAnnotation Disambiguator="11" />
+						<AttachedAnnotation Disambiguator="12" />
 					</Element>
 				</Entry>
 				<Entry>
@@ -440,7 +459,109 @@
 					<References ExternalSource="BuiltIns" Name="[dbo]" />
 				</Entry>
 			</Relationship>
-			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="13" />
+			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="14" />
+		</Element>
+		<Element Type="SqlTable" Name="[dbo].[Authors]">
+			<Property Name="IsAnsiNullsOn" Value="True" />
+			<Relationship Name="Columns">
+				<Entry>
+					<Element Type="SqlSimpleColumn" Name="[dbo].[Authors].[Id]">
+						<Property Name="IsNullable" Value="False" />
+						<Property Name="IsIdentity" Value="True" />
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[int]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+						<AttachedAnnotation Disambiguator="9" />
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlSimpleColumn" Name="[dbo].[Authors].[dataHash]">
+						<Property Name="IsNullable" Value="False" />
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Property Name="Length" Value="24" />
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[varchar]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlSimpleColumn" Name="[dbo].[Authors].[username]">
+						<Property Name="IsNullable" Value="False" />
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Property Name="Length" Value="20" />
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[varchar]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlSimpleColumn" Name="[dbo].[Authors].[dateAuthored]">
+						<Property Name="IsNullable" Value="False" />
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[datetime]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+			</Relationship>
+			<Relationship Name="Schema">
+				<Entry>
+					<References ExternalSource="BuiltIns" Name="[dbo]" />
+				</Entry>
+			</Relationship>
+			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="15" />
+		</Element>
+		<Element Type="SqlForeignKeyConstraint" Name="[dbo].[AuthorsToData]">
+			<Relationship Name="Columns">
+				<Entry>
+					<References Name="[dbo].[Authors].[dataHash]" />
+				</Entry>
+			</Relationship>
+			<Relationship Name="DefiningTable">
+				<Entry>
+					<References Name="[dbo].[Authors]" />
+				</Entry>
+			</Relationship>
+			<Relationship Name="ForeignColumns">
+				<Entry>
+					<References Name="[dbo].[DataTable].[dataHash]" />
+				</Entry>
+			</Relationship>
+			<Relationship Name="ForeignTable">
+				<Entry>
+					<References Name="[dbo].[DataTable]" />
+				</Entry>
+			</Relationship>
+			<AttachedAnnotation Disambiguator="15" />
 		</Element>
 		<Element Type="SqlTable" Name="[dbo].[DataTable]">
 			<Property Name="IsAnsiNullsOn" Value="True" />
@@ -478,7 +599,7 @@
 								</Element>
 							</Entry>
 						</Relationship>
-						<AttachedAnnotation Disambiguator="12" />
+						<AttachedAnnotation Disambiguator="13" />
 					</Element>
 				</Entry>
 				<Entry>
@@ -515,22 +636,6 @@
 					</Element>
 				</Entry>
 				<Entry>
-					<Element Type="SqlSimpleColumn" Name="[dbo].[DataTable].[author]">
-						<Relationship Name="TypeSpecifier">
-							<Entry>
-								<Element Type="SqlTypeSpecifier">
-									<Property Name="Length" Value="100" />
-									<Relationship Name="Type">
-										<Entry>
-											<References ExternalSource="BuiltIns" Name="[varchar]" />
-										</Entry>
-									</Relationship>
-								</Element>
-							</Entry>
-						</Relationship>
-					</Element>
-				</Entry>
-				<Entry>
 					<Element Type="SqlSimpleColumn" Name="[dbo].[DataTable].[dateCreated]">
 						<Property Name="IsNullable" Value="False" />
 						<Relationship Name="TypeSpecifier">
@@ -552,7 +657,6 @@
 					<References ExternalSource="BuiltIns" Name="[dbo]" />
 				</Entry>
 			</Relationship>
-			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="14" />
 		</Element>
 		<Element Type="SqlForeignKeyConstraint" Name="[dbo].[fk_accountHash_to_user]">
 			<Relationship Name="Columns">
@@ -575,7 +679,7 @@
 					<References Name="[dbo].[apiUser]" />
 				</Entry>
 			</Relationship>
-			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="15" />
+			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="16" />
 		</Element>
 		<Element Type="SqlForeignKeyConstraint" Name="[dbo].[fk_demohash_to_dataTable]">
 			<Relationship Name="Columns">
@@ -598,7 +702,7 @@
 					<References Name="[dbo].[DataTable]" />
 				</Entry>
 			</Relationship>
-			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="16" />
+			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="17" />
 		</Element>
 		<Element Type="SqlForeignKeyConstraint" Name="[dbo].[fk_lessonHash_to_dataTable]">
 			<Relationship Name="Columns">
@@ -621,7 +725,7 @@
 					<References Name="[dbo].[DataTable]" />
 				</Entry>
 			</Relationship>
-			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="17" />
+			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="18" />
 		</Element>
 		<Element Type="SqlForeignKeyConstraint" Name="[dbo].[fk_lessonHash_to_user]">
 			<Relationship Name="Columns">
@@ -644,7 +748,7 @@
 					<References Name="[dbo].[apiUser]" />
 				</Entry>
 			</Relationship>
-			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="18" />
+			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="19" />
 		</Element>
 		<Element Type="SqlForeignKeyConstraint" Name="[dbo].[fk_SessionModel_to_apiUser]">
 			<Relationship Name="Columns">
@@ -667,7 +771,7 @@
 					<References Name="[dbo].[apiUser]" />
 				</Entry>
 			</Relationship>
-			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="19" />
+			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="20" />
 		</Element>
 		<Element Type="SqlForeignKeyConstraint" Name="[dbo].[fk_userdata_to_user]">
 			<Relationship Name="Columns">
@@ -690,7 +794,7 @@
 					<References Name="[dbo].[apiUser]" />
 				</Entry>
 			</Relationship>
-			<AttachedAnnotation Disambiguator="13" />
+			<AttachedAnnotation Disambiguator="14" />
 		</Element>
 		<Element Type="SqlTable" Name="[dbo].[SessionModel]">
 			<Property Name="IsAnsiNullsOn" Value="True" />
@@ -753,7 +857,7 @@
 					<References ExternalSource="BuiltIns" Name="[dbo]" />
 				</Entry>
 			</Relationship>
-			<AttachedAnnotation Disambiguator="19" />
+			<AttachedAnnotation Disambiguator="20" />
 		</Element>
 		<Element Type="SqlUniqueConstraint" Name="[dbo].[unique_demo_to_user]">
 			<Relationship Name="ColumnSpecifications">
@@ -781,7 +885,7 @@
 					<References Name="[dbo].[UserSavedDemos]" />
 				</Entry>
 			</Relationship>
-			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="20" />
+			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="21" />
 		</Element>
 		<Element Type="SqlUniqueConstraint" Name="[dbo].[unique_lesson_to_user]">
 			<Relationship Name="ColumnSpecifications">
@@ -809,35 +913,7 @@
 					<References Name="[dbo].[userSavedLessons]" />
 				</Entry>
 			</Relationship>
-			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="21" />
-		</Element>
-		<Element Type="SqlUniqueConstraint" Name="[dbo].[uniqueSaves]">
-			<Relationship Name="ColumnSpecifications">
-				<Entry>
-					<Element Type="SqlIndexedColumnSpecification">
-						<Relationship Name="Column">
-							<Entry>
-								<References Name="[dbo].[DataTable].[dataHash]" />
-							</Entry>
-						</Relationship>
-					</Element>
-				</Entry>
-				<Entry>
-					<Element Type="SqlIndexedColumnSpecification">
-						<Relationship Name="Column">
-							<Entry>
-								<References Name="[dbo].[DataTable].[author]" />
-							</Entry>
-						</Relationship>
-					</Element>
-				</Entry>
-			</Relationship>
-			<Relationship Name="DefiningTable">
-				<Entry>
-					<References Name="[dbo].[DataTable]" />
-				</Entry>
-			</Relationship>
-			<AttachedAnnotation Disambiguator="14" />
+			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="22" />
 		</Element>
 		<Element Type="SqlTable" Name="[dbo].[UserSavedDemos]">
 			<Property Name="IsAnsiNullsOn" Value="True" />
@@ -916,9 +992,9 @@
 					<References ExternalSource="BuiltIns" Name="[dbo]" />
 				</Entry>
 			</Relationship>
-			<AttachedAnnotation Disambiguator="15" />
 			<AttachedAnnotation Disambiguator="16" />
-			<AttachedAnnotation Disambiguator="20" />
+			<AttachedAnnotation Disambiguator="17" />
+			<AttachedAnnotation Disambiguator="21" />
 		</Element>
 		<Element Type="SqlTable" Name="[dbo].[userSavedLessons]">
 			<Property Name="IsAnsiNullsOn" Value="True" />
@@ -997,9 +1073,9 @@
 					<References ExternalSource="BuiltIns" Name="[dbo]" />
 				</Entry>
 			</Relationship>
+			<AttachedAnnotation Disambiguator="19" />
 			<AttachedAnnotation Disambiguator="18" />
-			<AttachedAnnotation Disambiguator="17" />
-			<AttachedAnnotation Disambiguator="21" />
+			<AttachedAnnotation Disambiguator="22" />
 		</Element>
 	</Model>
 </DataSchemaModel>
