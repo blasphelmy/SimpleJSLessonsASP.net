@@ -24,5 +24,6 @@ namespace SimpleJSLessons.Models
         public string LessonTitle { get; set; }
 
         public virtual ApiUser AccountHashNavigation { get; set; }
+        public virtual DataTable LessonHashNavigation { get; set; }
     }
 }

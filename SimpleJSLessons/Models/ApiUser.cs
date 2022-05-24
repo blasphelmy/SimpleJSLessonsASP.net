@@ -26,6 +26,8 @@ namespace SimpleJSLessons.Models
         [Column("username")]
         [StringLength(30)]
         public string Username { get; set; }
+        [Column("dateCreated", TypeName = "datetime")]
+        public DateTime DateCreated { get; set; }
 
         public virtual ApiUserInformation ApiUserInformation { get; set; }
         public virtual ICollection<SessionModel> SessionModel { get; set; }

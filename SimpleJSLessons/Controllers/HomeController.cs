@@ -118,8 +118,8 @@ namespace SimpleJSLessons.Controllers
             newApiUserInformation.FirstName = newUser.firstName;
             newApiUserInformation.LastName = newUser.lastName;
 
-            context.Database.ExecuteSqlCommand($"use SimpleJSLessonsAPIData insert into apiUser(accountHash, username) values({accounthash}, {newApiUser.Username})");
-            context.Database.ExecuteSqlCommand($"use SimpleJSLessonsAPIData insert into apiUserInformation(accountHash, firstName, lastName) values ({accounthash}, {newApiUserInformation.FirstName}, {newApiUserInformation.LastName})");
+            context.Database.ExecuteSqlCommand($"use SimpleJSLessonsAPIData insert into apiUser(accountHash, username, dateCreated) values({accounthash}, {newApiUser.Username}, {DateTime.Now})");
+            context.Database.ExecuteSqlCommand($"use SimpleJSLessonsAPIData insert into apiUserInformation(accountHash, firstName, lastName, datemodified) values ({accounthash}, {newApiUserInformation.FirstName}, {newApiUserInformation.LastName}, {DateTime.Now})");
 
             var rand = new Random();
             string newSessionHash = ComputeSha256Hash(newApiUser.Username + newApiUser.AccountHash + rand.Next() + DateTime.Now);
@@ -183,12 +183,28 @@ namespace SimpleJSLessons.Controllers
                 {
                     if (newData.type == "demo")
                     {
-                        context.Database.ExecuteSqlCommand($"use SimpleJSLessonsAPIData insert into UserSavedDemos(accountHash, demoHash, demoTitle) values ({accountHash},{newData.hashcode},{newData.title})");
+                        try
+                        {
+                            context.Database.ExecuteSqlCommand($"use SimpleJSLessonsAPIData insert into DataTable(dataHash, data, title) values({newData.hashcode},{newData.data},{newData.title})");
+                            context.Database.ExecuteSqlCommand($"use SimpleJSLessonsAPIData insert into UserSavedDemos(accountHash, demoHash, demoTitle) values ({accountHash},{newData.hashcode},{newData.title})");
+                        }
+                        catch
+                        {
+                            context.Database.ExecuteSqlCommand($"use SimpleJSLessonsAPIData insert into UserSavedDemos(accountHash, demoHash, demoTitle) values ({accountHash},{newData.hashcode},{newData.title})");
+                        }
                         return Json(0);
                     }
                     else if (newData.type == "lessonAnswers")
                     {
-                        context.Database.ExecuteSqlCommand($"use SimpleJSLessonsAPIData insert into UserSavedLessons(accountHash, lessonHash, lessonTitle) values ({accountHash},{newData.hashcode},{newData.title})");
+                        try
+                        {
+                            context.Database.ExecuteSqlCommand($"use SimpleJSLessonsAPIData insert into DataTable(dataHash, data, title) values({newData.hashcode},{newData.data},{newData.title})");
+                            context.Database.ExecuteSqlCommand($"use SimpleJSLessonsAPIData insert into UserSavedLessons(accountHash, lessonHash, lessonTitle) values ({accountHash},{newData.hashcode},{newData.title})");
+                        }
+                        catch
+                        {
+                            context.Database.ExecuteSqlCommand($"use SimpleJSLessonsAPIData insert into UserSavedLessons(accountHash, lessonHash, lessonTitle) values ({accountHash},{newData.hashcode},{newData.title})");
+                        }
                         return Json(0);
                     }
                     else

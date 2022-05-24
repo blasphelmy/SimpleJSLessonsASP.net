@@ -23,6 +23,14 @@ namespace SimpleJSLessons.Models
         [Column("lastName")]
         [StringLength(24)]
         public string LastName { get; set; }
+        [Column("email")]
+        [StringLength(64)]
+        public string Email { get; set; }
+        [Column("ctclinkID")]
+        [StringLength(24)]
+        public string CtclinkId { get; set; }
+        [Column("datemodified", TypeName = "datetime")]
+        public DateTime? Datemodified { get; set; }
 
         public virtual ApiUser AccountHashNavigation { get; set; }
     }

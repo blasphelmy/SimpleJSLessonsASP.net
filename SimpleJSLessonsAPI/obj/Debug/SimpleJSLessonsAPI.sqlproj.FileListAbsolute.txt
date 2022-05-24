@@ -8,3 +8,12 @@ C:\Users\David Nguyen\Desktop\SimpleJSLessonsAPI\obj\Debug\Model.xml
 C:\Users\David Nguyen\Desktop\SimpleJSLessonsAPI\obj\Debug\refactor.xml
 C:\Users\David Nguyen\Desktop\SimpleJSLessonsAPI\obj\Debug\postdeploy.sql
 C:\Users\David Nguyen\Desktop\SimpleJSLessonsAPI\obj\Debug\predeploy.sql
+C:\Users\David Nguyen\Desktop\gitHub\SimpleJSLessonsASP.net\SimpleJSLessonsAPI\bin\Debug\SimpleJSLessonsAPI.dacpac
+C:\Users\David Nguyen\Desktop\gitHub\SimpleJSLessonsASP.net\SimpleJSLessonsAPI\obj\Debug\SimpleJSLessonsAPI.dll
+C:\Users\David Nguyen\Desktop\gitHub\SimpleJSLessonsASP.net\SimpleJSLessonsAPI\obj\Debug\SimpleJSLessonsAPI.pdb
+C:\Users\David Nguyen\Desktop\gitHub\SimpleJSLessonsASP.net\SimpleJSLessonsAPI\bin\Debug\SimpleJSLessonsAPI.dll
+C:\Users\David Nguyen\Desktop\gitHub\SimpleJSLessonsASP.net\SimpleJSLessonsAPI\bin\Debug\SimpleJSLessonsAPI.pdb
+C:\Users\David Nguyen\Desktop\gitHub\SimpleJSLessonsASP.net\SimpleJSLessonsAPI\obj\Debug\Model.xml
+C:\Users\David Nguyen\Desktop\gitHub\SimpleJSLessonsASP.net\SimpleJSLessonsAPI\obj\Debug\refactor.xml
+C:\Users\David Nguyen\Desktop\gitHub\SimpleJSLessonsASP.net\SimpleJSLessonsAPI\obj\Debug\postdeploy.sql
+C:\Users\David Nguyen\Desktop\gitHub\SimpleJSLessonsASP.net\SimpleJSLessonsAPI\obj\Debug\predeploy.sql

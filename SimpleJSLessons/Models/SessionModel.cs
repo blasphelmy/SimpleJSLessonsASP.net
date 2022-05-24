@@ -5,7 +5,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SimpleJSLessons.Models
 {
-    [Table("sessionModel")]
     public partial class SessionModel
     {
         [Key]

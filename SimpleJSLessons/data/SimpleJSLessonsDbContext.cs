@@ -18,6 +18,7 @@ namespace SimpleJSLessons.data
 
         public virtual DbSet<ApiUser> ApiUser { get; set; }
         public virtual DbSet<ApiUserInformation> ApiUserInformation { get; set; }
+        public virtual DbSet<DataTable> DataTable { get; set; }
         public virtual DbSet<SessionModel> SessionModel { get; set; }
         public virtual DbSet<UserSavedDemos> UserSavedDemos { get; set; }
         public virtual DbSet<UserSavedLessons> UserSavedLessons { get; set; }
@@ -36,11 +37,11 @@ namespace SimpleJSLessons.data
             modelBuilder.Entity<ApiUser>(entity =>
             {
                 entity.HasIndex(e => e.AccountHash)
-                    .HasName("UQ__apiUser__2EEAD09C6191F808")
+                    .HasName("UQ__apiUser__2EEAD09C49497B64")
                     .IsUnique();
 
                 entity.HasIndex(e => e.Username)
-                    .HasName("UQ__apiUser__F3DBC5720D6DC048")
+                    .HasName("UQ__apiUser__F3DBC5729923320A")
                     .IsUnique();
 
                 entity.Property(e => e.AccountHash).IsUnicode(false);
@@ -51,10 +52,14 @@ namespace SimpleJSLessons.data
             modelBuilder.Entity<ApiUserInformation>(entity =>
             {
                 entity.HasIndex(e => e.AccountHash)
-                    .HasName("UQ__apiUserI__2EEAD09C900CF5FA")
+                    .HasName("UQ__apiUserI__2EEAD09C59ED28F8")
                     .IsUnique();
 
                 entity.Property(e => e.AccountHash).IsUnicode(false);
+
+                entity.Property(e => e.CtclinkId).IsUnicode(false);
+
+                entity.Property(e => e.Email).IsUnicode(false);
 
                 entity.Property(e => e.FirstName).IsUnicode(false);
 
@@ -68,12 +73,21 @@ namespace SimpleJSLessons.data
                     .HasConstraintName("fk_userdata_to_user");
             });
 
-            modelBuilder.Entity<SessionModel>(entity =>
+            modelBuilder.Entity<DataTable>(entity =>
             {
-                entity.HasIndex(e => e.SessionId)
-                    .HasName("UQ__sessionM__23DB12CA4165C073")
+                entity.HasIndex(e => e.DataHash)
+                    .HasName("UQ__DataTabl__13869B633FF81061")
                     .IsUnique();
 
+                entity.Property(e => e.Data).IsUnicode(false);
+
+                entity.Property(e => e.DataHash).IsUnicode(false);
+
+                entity.Property(e => e.Title).IsUnicode(false);
+            });
+
+            modelBuilder.Entity<SessionModel>(entity =>
+            {
                 entity.Property(e => e.AccountHash).IsUnicode(false);
 
                 entity.Property(e => e.SessionId).IsUnicode(false);
@@ -83,11 +97,15 @@ namespace SimpleJSLessons.data
                     .HasPrincipalKey(p => p.AccountHash)
                     .HasForeignKey(d => d.AccountHash)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("fk_usersession_to_user");
+                    .HasConstraintName("fk_SessionModel_to_apiUser");
             });
 
             modelBuilder.Entity<UserSavedDemos>(entity =>
             {
+                entity.HasIndex(e => new { e.AccountHash, e.DemoHash })
+                    .HasName("unique_demo_to_user")
+                    .IsUnique();
+
                 entity.Property(e => e.AccountHash).IsUnicode(false);
 
                 entity.Property(e => e.DemoHash).IsUnicode(false);
@@ -99,11 +117,22 @@ namespace SimpleJSLessons.data
                     .HasPrincipalKey(p => p.AccountHash)
                     .HasForeignKey(d => d.AccountHash)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("fk_demoHash_to_user");
+                    .HasConstraintName("fk_accountHash_to_user");
+
+                entity.HasOne(d => d.DemoHashNavigation)
+                    .WithMany(p => p.UserSavedDemos)
+                    .HasPrincipalKey(p => p.DataHash)
+                    .HasForeignKey(d => d.DemoHash)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("fk_demohash_to_dataTable");
             });
 
             modelBuilder.Entity<UserSavedLessons>(entity =>
             {
+                entity.HasIndex(e => new { e.AccountHash, e.LessonHash })
+                    .HasName("unique_lesson_to_user")
+                    .IsUnique();
+
                 entity.Property(e => e.AccountHash).IsUnicode(false);
 
                 entity.Property(e => e.LessonHash).IsUnicode(false);
@@ -116,6 +145,13 @@ namespace SimpleJSLessons.data
                     .HasForeignKey(d => d.AccountHash)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("fk_lessonHash_to_user");
+
+                entity.HasOne(d => d.LessonHashNavigation)
+                    .WithMany(p => p.UserSavedLessons)
+                    .HasPrincipalKey(p => p.DataHash)
+                    .HasForeignKey(d => d.LessonHash)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("fk_lessonHash_to_dataTable");
             });
 
             OnModelCreatingPartial(modelBuilder);
