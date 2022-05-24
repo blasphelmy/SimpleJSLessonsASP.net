@@ -73,7 +73,7 @@ namespace SimpleJSLessons.Controllers
         }
 
         [HttpGet]
-        public IActionResult createAccount(String error)
+        public IActionResult createAccount()
         {
             UserModel thisUser = new UserModel();
             string cookieValueFromReq = Request.Cookies["sessionid"];
@@ -163,59 +163,55 @@ namespace SimpleJSLessons.Controllers
             }
         }
         [HttpPost]
-        public IActionResult postData([FromBody] DataModel data)
+        public IActionResult postData([FromBody] DataModel data) //returns: 0 - account found, data written, no errors, 1 - saved as anon, no errors*, 2 - data saved, account error, cookie read but no user found, saved data as anon 3/-1 - nothing saved
         {
             DataModel newData = data;
-
+            newData.hashcode = ComputeSha256Hash(newData.data).Substring(0, 5);
             string cookieValueFromReq = Request.Cookies["sessionid"];
-            if (cookieValueFromReq != null)
+            string accountHash = "";
+            try
             {
-                string accountHash = "";
-                try
+                accountHash = context.SessionModel.FromSqlRaw($"use SimpleJSLessonsAPIData select * from SessionModel where sessionID = '{cookieValueFromReq}'").ToList()[0].AccountHash;
+                ApiUser thisUser = context.ApiUser.FirstOrDefault((user) => user.AccountHash == accountHash);
+                if (context.ApiUser.FirstOrDefault((user) => user.AccountHash == accountHash).Username != null)
                 {
-                    accountHash = context.SessionModel.FromSqlRaw($"use SimpleJSLessonsAPIData select * from SessionModel where sessionID = '{cookieValueFromReq}'").ToList()[0].AccountHash;
-                }
-                catch
-                {
-                    return Json(-1);
-                }
-                if (accountHash != null)
-                {
+                    context.Database.ExecuteSqlCommand($"use SimpleJSLessonsAPIData insert into DataTable(dataHash, data, title, author, dateCreated) values({newData.hashcode},{newData.data},{newData.title}, {thisUser.Username}, {DateTime.Now})");
                     if (newData.type == "demo")
                     {
-                        try
-                        {
-                            context.Database.ExecuteSqlCommand($"use SimpleJSLessonsAPIData insert into DataTable(dataHash, data, title) values({newData.hashcode},{newData.data},{newData.title})");
-                            context.Database.ExecuteSqlCommand($"use SimpleJSLessonsAPIData insert into UserSavedDemos(accountHash, demoHash, demoTitle) values ({accountHash},{newData.hashcode},{newData.title})");
-                        }
-                        catch
-                        {
-                            context.Database.ExecuteSqlCommand($"use SimpleJSLessonsAPIData insert into UserSavedDemos(accountHash, demoHash, demoTitle) values ({accountHash},{newData.hashcode},{newData.title})");
-                        }
+                        context.Database.ExecuteSqlCommand($"use SimpleJSLessonsAPIData insert into UserSavedDemos(accountHash, demoHash, demoTitle) values ({accountHash},{newData.hashcode},{newData.title})");
                         return Json(0);
                     }
                     else if (newData.type == "lessonAnswers")
                     {
-                        try
-                        {
-                            context.Database.ExecuteSqlCommand($"use SimpleJSLessonsAPIData insert into DataTable(dataHash, data, title) values({newData.hashcode},{newData.data},{newData.title})");
-                            context.Database.ExecuteSqlCommand($"use SimpleJSLessonsAPIData insert into UserSavedLessons(accountHash, lessonHash, lessonTitle) values ({accountHash},{newData.hashcode},{newData.title})");
-                        }
-                        catch
-                        {
-                            context.Database.ExecuteSqlCommand($"use SimpleJSLessonsAPIData insert into UserSavedLessons(accountHash, lessonHash, lessonTitle) values ({accountHash},{newData.hashcode},{newData.title})");
-                        }
+                        context.Database.ExecuteSqlCommand($"use SimpleJSLessonsAPIData insert into UserSavedLessons(accountHash, lessonHash, lessonTitle) values ({accountHash},{newData.hashcode},{newData.title})");
                         return Json(0);
                     }
-                    else
+                }
+                else
+                {
+                    try
                     {
-                        return Json(1);
+                        context.Database.ExecuteSqlCommand($"use SimpleJSLessonsAPIData insert into DataTable(dataHash, data, title, dateCreated) values({newData.hashcode},{newData.data},{newData.title}, {DateTime.Now})");
+                        return Json(2);
                     }
+                    catch
+                    {
+                        return Json(3);
+                    }
+
                 }
             }
-            else
+            catch
             {
-                return Json(1);
+                try
+                {
+                    context.Database.ExecuteSqlCommand($"use SimpleJSLessonsAPIData insert into DataTable(dataHash, data, title, dateCreated) values({newData.hashcode},{newData.data},{newData.title}, {DateTime.Now})");
+                    return Json(1);
+                }
+                catch
+                {
+                    return Json(3);
+                }
             }
             return Json(-1);
         }

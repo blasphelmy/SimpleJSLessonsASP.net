@@ -37,11 +37,11 @@ namespace SimpleJSLessons.data
             modelBuilder.Entity<ApiUser>(entity =>
             {
                 entity.HasIndex(e => e.AccountHash)
-                    .HasName("UQ__apiUser__2EEAD09C49497B64")
+                    .HasName("UQ__apiUser__2EEAD09C5C60E1F9")
                     .IsUnique();
 
                 entity.HasIndex(e => e.Username)
-                    .HasName("UQ__apiUser__F3DBC5729923320A")
+                    .HasName("UQ__apiUser__F3DBC57291B163ED")
                     .IsUnique();
 
                 entity.Property(e => e.AccountHash).IsUnicode(false);
@@ -52,7 +52,7 @@ namespace SimpleJSLessons.data
             modelBuilder.Entity<ApiUserInformation>(entity =>
             {
                 entity.HasIndex(e => e.AccountHash)
-                    .HasName("UQ__apiUserI__2EEAD09C59ED28F8")
+                    .HasName("UQ__apiUserI__2EEAD09C0115DA3C")
                     .IsUnique();
 
                 entity.Property(e => e.AccountHash).IsUnicode(false);
@@ -76,8 +76,10 @@ namespace SimpleJSLessons.data
             modelBuilder.Entity<DataTable>(entity =>
             {
                 entity.HasIndex(e => e.DataHash)
-                    .HasName("UQ__DataTabl__13869B633FF81061")
+                    .HasName("UQ__DataTabl__13869B63B4953385")
                     .IsUnique();
+
+                entity.Property(e => e.Author).IsUnicode(false);
 
                 entity.Property(e => e.Data).IsUnicode(false);
 

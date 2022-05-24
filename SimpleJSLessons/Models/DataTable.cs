@@ -25,6 +25,9 @@ namespace SimpleJSLessons.Models
         [Column("title")]
         [StringLength(128)]
         public string Title { get; set; }
+        [Column("author")]
+        [StringLength(100)]
+        public string Author { get; set; }
 
         public virtual ICollection<UserSavedDemos> UserSavedDemos { get; set; }
         public virtual ICollection<UserSavedLessons> UserSavedLessons { get; set; }

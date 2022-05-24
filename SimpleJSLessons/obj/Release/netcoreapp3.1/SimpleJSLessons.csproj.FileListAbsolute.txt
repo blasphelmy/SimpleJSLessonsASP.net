@@ -62,3 +62,4 @@ C:\Users\David Nguyen\Desktop\gitHub\SimpleJSLessonsASP.net\SimpleJSLessons\obj\
 C:\Users\David Nguyen\Desktop\gitHub\SimpleJSLessonsASP.net\SimpleJSLessons\obj\Release\netcoreapp3.1\SimpleJSLessons.dll
 C:\Users\David Nguyen\Desktop\gitHub\SimpleJSLessonsASP.net\SimpleJSLessons\obj\Release\netcoreapp3.1\SimpleJSLessons.pdb
 C:\Users\David Nguyen\Desktop\gitHub\SimpleJSLessonsASP.net\SimpleJSLessons\obj\Release\netcoreapp3.1\SimpleJSLessons.genruntimeconfig.cache
+C:\Users\David Nguyen\Desktop\gitHub\SimpleJSLessonsASP.net\SimpleJSLessons\obj\Release\netcoreapp3.1\SimpleJSLessons.csprojAssemblyReference.cache
