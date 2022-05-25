@@ -1,1 +1,6 @@
-﻿@model IEnumerable<DataTable>
+﻿@model IEnumerable<DataDataTable>
+@foreach(DataDataTable data in Model)
+{
+    <p>@data.Title</p>
+    <img src="@data.ImageData"></img>
+}

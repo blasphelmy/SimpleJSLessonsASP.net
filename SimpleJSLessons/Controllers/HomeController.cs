@@ -23,75 +23,57 @@ namespace SimpleJSLessons.Controllers
         {
             this.context = context;
         }
-
-        public IActionResult Index()
+        public string getUserName(string cookie)
         {
             UserModel thisUser = new UserModel();
             string cookieValueFromReq = Request.Cookies["sessionid"];
-            if (cookieValueFromReq != null)
+            string accountHash = "";
+            try
             {
-                string accountHash = "";
-                try
-                {
-                    accountHash = context.SessionModel.FromSqlRaw($"use SimpleJSLessonsAPIData select * from SessionModel where sessionID = '{cookieValueFromReq}'").ToList()[0].AccountHash;
-                }
-                catch
-                {
-                    return View();
-                }
-                if(accountHash != null)
-                {
-                    string firstname = context.ApiUserInformation.FromSqlRaw($"use SimpleJSLessonsAPIData select * from apiUserInformation where accountHash = '{accountHash}'").ToList()[0].FirstName;
-                    ViewBag.firstName = firstname;
-                }
+                accountHash = context.SessionModel.FromSqlRaw($"use SimpleJSLessonsAPIData select * from SessionModel where sessionID = '{cookieValueFromReq}'").ToList()[0].AccountHash;
+            }
+            catch
+            {
+                return null;
+            }
+            if (accountHash != null)
+            {
+                string firstname = context.ApiUserInformation.FromSqlRaw($"use SimpleJSLessonsAPIData select * from apiUserInformation where accountHash = '{accountHash}'").ToList()[0].FirstName;
+                return firstname;
+            }
+            return null;
+        }
+
+        public IActionResult Index()
+        {
+            string cookieValueFromReq = Request.Cookies["sessionid"];
+            if(cookieValueFromReq != null && getUserName(cookieValueFromReq) != null)
+            {
+                ViewBag.firstName = getUserName(cookieValueFromReq);
             }
             return View();
         }
         public IActionResult myAccount()
         { 
             string cookieValueFromReq = Request.Cookies["sessionid"];
-            if (cookieValueFromReq != null)
+
+            if(cookieValueFromReq != null && getUserName(cookieValueFromReq) != null)
             {
+                ViewBag.firstName = getUserName(cookieValueFromReq);
                 string accountHash = context.SessionModel.FromSqlRaw($"use SimpleJSLessonsAPIData select * from SessionModel where sessionID = '{cookieValueFromReq}'").ToList()[0].AccountHash;
-                if (accountHash != null)
-                {
-                    string firstname = context.ApiUserInformation.FromSqlRaw($"use SimpleJSLessonsAPIData select * from apiUserInformation where accountHash = '{accountHash}'").ToList()[0].FirstName;
-                    ViewBag.firstName = firstname;
-                    ApiUser currentUser = context.ApiUser.FirstOrDefault((user) => user.AccountHash == accountHash);
-                    return View(currentUser);
-                }
-                else
-                {
-                    return RedirectToAction("Index", "Home");
-                }
+                ApiUser currentUser = context.ApiUser.FirstOrDefault((user) => user.AccountHash == accountHash);
+                return View(currentUser);
             }
-            else
-            {
-                return RedirectToAction("Index", "Home");
-            }
-            
+            return RedirectToAction("Index", "Home");
         }
 
         [HttpGet]
         public IActionResult createAccount()
         {
-            UserModel thisUser = new UserModel();
             string cookieValueFromReq = Request.Cookies["sessionid"];
-            if (cookieValueFromReq != null)
+            if(cookieValueFromReq != null && getUserName(cookieValueFromReq) != null)
             {
-                string accountHash = "";
-                try
-                {
-                    accountHash = context.SessionModel.FromSqlRaw($"use SimpleJSLessonsAPIData select * from SessionModel where sessionID = '{cookieValueFromReq}'").ToList()[0].AccountHash;
-                }
-                catch
-                {
-                    return View();
-                }
-                if (accountHash != null)
-                {
-                    return RedirectToAction("myAccount", "Home");
-                }
+                return RedirectToAction("myAccount", "Home");
             }
 
             return View();
@@ -165,6 +147,10 @@ namespace SimpleJSLessons.Controllers
         [HttpPost]
         public IActionResult postData([FromBody] DataModel data) //returns: 0 - account found, data written, no errors, 1 - saved as anon, no errors*, 2 - data saved, account error, cookie read but no user found, saved data as anon 3/-1 - nothing saved
         {
+            if(data.imageData == null)
+            {
+                data.imageData = "null";
+            }
             if(data.type == "demo" || data.type == "lessonAnswers" || data.type == "lesson")
             {
                 DataModel newData = data;
@@ -261,11 +247,29 @@ namespace SimpleJSLessons.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
-        //[HttpGet]
-        //public IActionResult search(string searchTerm)
-        //{
-        //    List<DataDataTable> dataTable = context.DataDataTable.ToList();
-        //}
+        [HttpGet]
+        public IActionResult search(string searchTerm)
+        {
+            string cookieValueFromReq = Request.Cookies["sessionid"];
+
+            if (cookieValueFromReq != null && getUserName(cookieValueFromReq) != null)
+            {
+                ViewBag.firstName = getUserName(cookieValueFromReq);
+            }
+            string[] searchTerms;
+            if (searchTerm != null)
+            {
+                searchTerms = searchTerm.Split(" ");
+            }
+            else
+            {
+                return View(context.DataDataTable.FromSqlRaw(@$"use SimpleJSLessonsAPIData 
+                                                    select top(10) * from dataDataTable
+                                                    order by id desc").ToList());
+            }
+            List<DataDataTable> dataTable = context.DataDataTable.ToList();
+            return View(dataTable);
+        }
         //pulled this functon from a tutorial somewhere. no need to write myself
         static string ComputeSha256Hash(string rawData)
         {

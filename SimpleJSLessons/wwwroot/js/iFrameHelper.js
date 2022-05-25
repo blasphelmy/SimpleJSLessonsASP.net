@@ -1,4 +1,5 @@
 ﻿var targetElement;
+var urlParameters = new Map();
 window.onload = function () {
     extractURLParems();
     targetElement = document.getElementById("iFrameMain");
@@ -42,5 +43,16 @@ function fillVerticalHeight(targetElement, offsetHeight) {
         }
     } else {
         targetElement.style.height = (window.innerHeight - offsetHeight) + "px";
+    }
+}
+function extractURLParems() {
+    try {
+        let parameters = window.location.href.split("?")[1].split("&");
+        for (parameter of parameters) {
+            let keyValue = parameter.split("=");
+            urlParameters.set(keyValue[0], keyValue[1]);
+        }
+    } catch (error) {
+        console.log(error);
     }
 }
