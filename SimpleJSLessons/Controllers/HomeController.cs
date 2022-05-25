@@ -177,6 +177,7 @@ namespace SimpleJSLessons.Controllers
                     ApiUser thisUser = context.ApiUser.FirstOrDefault((user) => user.AccountHash == accountHash);
                     if (thisUser != null)
                     {
+                        newData.hashcode = ComputeSha256Hash(newData.data + thisUser.Username).Substring(0, 6);
                         try
                         {
                             context.Database.ExecuteSqlCommand($"use SimpleJSLessonsAPIData insert into DataTable(dataHash, data, title, dateCreated) values({newData.hashcode},{newData.data},{newData.title}, {DateTime.Now})");
@@ -186,6 +187,14 @@ namespace SimpleJSLessons.Controllers
                             System.Console.WriteLine("Data Alredy Exists!");
                         }
                         context.Database.ExecuteSqlCommand($"use SimpleJSLessonsAPIData insert into Authors(dataHash, username, dateAuthored) values ({newData.hashcode},{thisUser.Username},{DateTime.Now})");
+                        try
+                        {
+                            context.Database.ExecuteSqlCommand($"use SimpleJSLessonsAPIData insert into dataDataTable(imageData, dataHash, uploadedBy, title) values ({newData.imageData},{newData.hashcode},{thisUser.Username}, {newData.title})");
+                        }
+                        catch
+                        {
+                            System.Console.WriteLine("error writing image data...");
+                        }
                         if (newData.type == "demo")
                         {
                             context.Database.ExecuteSqlCommand($"use SimpleJSLessonsAPIData insert into UserSavedDemos(accountHash, demoHash, demoTitle) values ({thisUser.AccountHash},{newData.hashcode},{newData.title})");
@@ -202,6 +211,14 @@ namespace SimpleJSLessons.Controllers
                         try
                         {
                             context.Database.ExecuteSqlCommand($"use SimpleJSLessonsAPIData insert into DataTable(dataHash, data, title, dateCreated) values({newData.hashcode},{newData.data},{newData.title}, {DateTime.Now})");
+                            try
+                            {
+                                context.Database.ExecuteSqlCommand($"use SimpleJSLessonsAPIData insert into dataDataTable(imageData, dataHash, uploadedBy, title) values ({newData.imageData},{newData.hashcode}, 'anonymous', {newData.title})");
+                            }
+                            catch
+                            {
+                                System.Console.WriteLine("error writing image data...");
+                            }
                             return Json(2);
                         }
                         catch
@@ -216,6 +233,7 @@ namespace SimpleJSLessons.Controllers
                     try
                     {
                         context.Database.ExecuteSqlCommand($"use SimpleJSLessonsAPIData insert into DataTable(dataHash, data, title, dateCreated) values({newData.hashcode},{newData.data},{newData.title}, {DateTime.Now})");
+                        context.Database.ExecuteSqlCommand($"use SimpleJSLessonsAPIData insert into dataDataTable(imageData, dataHash, uploadedBy, title) values ({newData.imageData},{newData.hashcode}, 'anonymous', {newData.title})");
                         return Json(1);
                     }
                     catch

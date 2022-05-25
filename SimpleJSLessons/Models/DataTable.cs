@@ -10,6 +10,7 @@ namespace SimpleJSLessons.Models
         public DataTable()
         {
             Authors = new HashSet<Authors>();
+            DataDataTable = new HashSet<DataDataTable>();
             UserSavedDemos = new HashSet<UserSavedDemos>();
             UserSavedLessons = new HashSet<UserSavedLessons>();
         }
@@ -30,6 +31,7 @@ namespace SimpleJSLessons.Models
         public DateTime DateCreated { get; set; }
 
         public virtual ICollection<Authors> Authors { get; set; }
+        public virtual ICollection<DataDataTable> DataDataTable { get; set; }
         public virtual ICollection<UserSavedDemos> UserSavedDemos { get; set; }
         public virtual ICollection<UserSavedLessons> UserSavedLessons { get; set; }
     }

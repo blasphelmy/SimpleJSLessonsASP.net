@@ -52,7 +52,7 @@ namespace SimpleJSLessons
             app.UseRouting();
 
             app.UseAuthorization();
-            app.UseCors(x => x.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
+            app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin().Build());
 
             app.UseEndpoints(endpoints =>
             {

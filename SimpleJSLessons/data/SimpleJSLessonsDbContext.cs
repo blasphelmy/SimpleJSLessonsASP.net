@@ -19,6 +19,7 @@ namespace SimpleJSLessons.data
         public virtual DbSet<ApiUser> ApiUser { get; set; }
         public virtual DbSet<ApiUserInformation> ApiUserInformation { get; set; }
         public virtual DbSet<Authors> Authors { get; set; }
+        public virtual DbSet<DataDataTable> DataDataTable { get; set; }
         public virtual DbSet<DataTable> DataTable { get; set; }
         public virtual DbSet<SessionModel> SessionModel { get; set; }
         public virtual DbSet<UserSavedDemos> UserSavedDemos { get; set; }
@@ -38,11 +39,11 @@ namespace SimpleJSLessons.data
             modelBuilder.Entity<ApiUser>(entity =>
             {
                 entity.HasIndex(e => e.AccountHash)
-                    .HasName("UQ__apiUser__2EEAD09C17FAB59F")
+                    .HasName("UQ__apiUser__2EEAD09C377847D0")
                     .IsUnique();
 
                 entity.HasIndex(e => e.Username)
-                    .HasName("UQ__apiUser__F3DBC572777B13DE")
+                    .HasName("UQ__apiUser__F3DBC572DD318E88")
                     .IsUnique();
 
                 entity.Property(e => e.AccountHash).IsUnicode(false);
@@ -53,7 +54,7 @@ namespace SimpleJSLessons.data
             modelBuilder.Entity<ApiUserInformation>(entity =>
             {
                 entity.HasIndex(e => e.AccountHash)
-                    .HasName("UQ__apiUserI__2EEAD09C04DAD1C0")
+                    .HasName("UQ__apiUserI__2EEAD09C6FAEA3AD")
                     .IsUnique();
 
                 entity.Property(e => e.AccountHash).IsUnicode(false);
@@ -88,10 +89,32 @@ namespace SimpleJSLessons.data
                     .HasConstraintName("AuthorsToData");
             });
 
+            modelBuilder.Entity<DataDataTable>(entity =>
+            {
+                entity.HasIndex(e => new { e.UploadedBy, e.DataHash })
+                    .HasName("uniqueImgToData")
+                    .IsUnique();
+
+                entity.Property(e => e.DataHash).IsUnicode(false);
+
+                entity.Property(e => e.ImageData).IsUnicode(false);
+
+                entity.Property(e => e.Title).IsUnicode(false);
+
+                entity.Property(e => e.UploadedBy).IsUnicode(false);
+
+                entity.HasOne(d => d.DataHashNavigation)
+                    .WithMany(p => p.DataDataTable)
+                    .HasPrincipalKey(p => p.DataHash)
+                    .HasForeignKey(d => d.DataHash)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("validDataReference");
+            });
+
             modelBuilder.Entity<DataTable>(entity =>
             {
                 entity.HasIndex(e => e.DataHash)
-                    .HasName("UQ__DataTabl__13869B63466FCC8A")
+                    .HasName("UQ__DataTabl__13869B631BA16147")
                     .IsUnique();
 
                 entity.Property(e => e.Data).IsUnicode(false);

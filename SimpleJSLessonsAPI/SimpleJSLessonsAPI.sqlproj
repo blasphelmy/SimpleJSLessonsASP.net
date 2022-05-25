@@ -67,6 +67,7 @@
     <Build Include="dbo\tables\UserSavedDemos.sql" />
     <Build Include="dbo\tables\DataTable.sql" />
     <Build Include="dbo\tables\Authors.sql" />
+    <Build Include="dbo\tables\dataDataTable.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="SimpleJSLessonsAPI.refactorlog" />
