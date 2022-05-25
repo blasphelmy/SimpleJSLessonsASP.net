@@ -247,14 +247,25 @@ namespace SimpleJSLessons.Controllers
         [HttpPost]
         public IActionResult requestData([FromBody] DataRequest dataHash)
         {
-            string data = context.DataTable.FirstOrDefault(data => data.DataHash == dataHash.dataHash).Data;
-            return Json(data); 
+            DataTable data = null;
+            data = context.DataTable.FirstOrDefault(data => data.DataHash == dataHash.dataHash);
+            if(data == null)
+            {
+                System.Console.WriteLine("Invalid data");
+                return Json(1);
+            }
+            return Json(data.Data);
         }
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+        //[HttpGet]
+        //public IActionResult search(string searchTerm)
+        //{
+        //    List<DataDataTable> dataTable = context.DataDataTable.ToList();
+        //}
         //pulled this functon from a tutorial somewhere. no need to write myself
         static string ComputeSha256Hash(string rawData)
         {
