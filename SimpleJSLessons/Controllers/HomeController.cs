@@ -132,6 +132,7 @@ namespace SimpleJSLessons.Controllers
                 return Json(0); //zero for not found
             }
         }
+        [HttpGet]
         public IActionResult usernameCheck(String username)
         {
             var user = context.ApiUser.FromSqlRaw($"use SimpleJSLessonsAPIData select * from apiUser where username = '{username}'").ToList();
@@ -260,6 +261,7 @@ namespace SimpleJSLessons.Controllers
             if (searchTerm != null)
             {
                 searchTerms = searchTerm.Split(" ");
+
             }
             else
             {
