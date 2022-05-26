@@ -12,6 +12,7 @@ using System.Security.Cryptography;
 using System.Text;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Http;
+using System.Text.RegularExpressions;
 
 namespace SimpleJSLessons.Controllers
 {
@@ -257,20 +258,60 @@ namespace SimpleJSLessons.Controllers
             {
                 ViewBag.firstName = getUserName(cookieValueFromReq);
             }
-            string[] searchTerms;
+            string[] searchTerms = null;
             if (searchTerm != null)
             {
+                
+                List<SearchResultsModel> searchResults = new List<SearchResultsModel>();
                 searchTerms = searchTerm.Split(" ");
-
+                searchTerms = searchTerms.Where(x => !string.IsNullOrEmpty(x.Trim())).ToArray();
+                
+                foreach(DataDataTable data in context.DataDataTable)
+                {
+                    double weight = 0;
+                    double multi = 1;
+                    foreach(string substring in searchTerms)
+                    {
+                        multi = 1;
+                        switch (substring)
+                        {
+                            case "the": multi = .5; break;
+                            case "of": multi = .7; break;
+                            case "is": multi = .5; break;
+                        }
+                        string newRegex = "(" + substring.Replace("\"", "") + ")";
+                        if (Regex.Matches($"{data.DataHash}", "\\b(" + substring.Replace("\"", "") + ")\\b", RegexOptions.IgnoreCase).Count > 0)
+                        {
+                            weight = (weight + 100) * multi;
+                        }
+                        if (Regex.Matches(data.Title, newRegex, RegexOptions.IgnoreCase).Count > 0)
+                        {
+                            weight = (weight + 15) * multi;
+                        }
+                        if (Regex.Matches(data.UploadedBy, newRegex, RegexOptions.IgnoreCase).Count > 0)
+                        {
+                            weight = (weight + 50) * multi;
+                        }
+                        if(weight > 0)
+                        {
+                            searchResults.Add(new SearchResultsModel(data, weight));
+                        }
+                    }
+                }
+                if(searchResults.Count > 0)
+                {
+                    List<DataDataTable> data = new List<DataDataTable>();
+                    searchResults.Sort((x, y) => y.weight.CompareTo(x.weight));
+                    foreach(SearchResultsModel item in searchResults)
+                    {
+                        data.Add(item.item);
+                    }
+                    return View(data);
+                }
             }
-            else
-            {
-                return View(context.DataDataTable.FromSqlRaw(@$"use SimpleJSLessonsAPIData 
+        return View(context.DataDataTable.FromSqlRaw(@$"use SimpleJSLessonsAPIData 
                                                     select top(10) * from dataDataTable
                                                     order by id desc").ToList());
-            }
-            List<DataDataTable> dataTable = context.DataDataTable.ToList();
-            return View(dataTable);
         }
         //pulled this functon from a tutorial somewhere. no need to write myself
         static string ComputeSha256Hash(string rawData)

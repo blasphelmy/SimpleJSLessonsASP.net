@@ -12,13 +12,11 @@ window.onload = function () {
 }
 window.onresize = function () {
     var targetElement = document.getElementById("iFrameMain");
-    var offSet = document.getElementById("navBar").offsetHeight + document.getElementById("footer").offsetHeight;
+    var offSet = document.getElementById("navBar").offsetHeight;
     console.log(offSet);
     fillVerticalHeight(targetElement, offSet);
 }
 window.onmessage = function (e) {
-    console.log("top level window");
-    console.log(e.data);
     var newPost = {
         method: 'POST',
         headers: {
