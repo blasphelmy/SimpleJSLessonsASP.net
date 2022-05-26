@@ -253,6 +253,7 @@ namespace SimpleJSLessons.Controllers
         public IActionResult search(string searchTerm)
         {
             string cookieValueFromReq = Request.Cookies["sessionid"];
+            ViewBag.Search = searchTerm;
 
             if (cookieValueFromReq != null && getUserName(cookieValueFromReq) != null)
             {

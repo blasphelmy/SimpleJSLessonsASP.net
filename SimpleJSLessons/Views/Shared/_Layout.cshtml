@@ -39,7 +39,15 @@
                         window.location.href = `/Home/search?searchTerm=${searchTerm}`;
                     }
                 </script>
-                <input class="form-control-sm" id="searchField" type="search" style="margin-left: 0px; margin-top: 1px; border-radius: 10px; border-style: none;" placeholder="Search"><button  onclick="search()"  class="btn btn-primary btn-sm" id="searchButton" type="button" style="margin-left: 10px;border-radius: 10px;height: 31px;">Search</button><button class="navbar-toggler" data-bs-target="#navcol-1" data-bs-toggle="collapse"><span class="visually-hidden">Toggle navigation</span><span class="navbar-dark navbar-toggler-icon"></span></button>
+                @if (ViewBag.Search == null)
+                {
+                    <input class="form-control-sm" id="searchField" type="search" style="margin-left: 0px; margin-top: 1px; border-radius: 10px; border-style: none;" placeholder="Search">
+                }
+                else
+                {
+                    <input class="form-control-sm" id="searchField" type="search" value="@ViewBag.Search" style="margin-left: 0px; margin-top: 1px; border-radius: 10px; border-style: none;" placeholder="Search">
+                }
+                <button onclick="search()" class="btn btn-primary btn-sm" id="searchButton" type="button" style="margin-left: 10px;border-radius: 10px;height: 31px;">Search</button><button class="navbar-toggler" data-bs-target="#navcol-1" data-bs-toggle="collapse"><span class="visually-hidden">Toggle navigation</span><span class="navbar-dark navbar-toggler-icon"></span></button>
             </div>
         </nav>
     </header>
