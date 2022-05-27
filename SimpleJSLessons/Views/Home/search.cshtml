@@ -1,51 +1,23 @@
 ﻿@model IEnumerable<DataDataTable>
-<style>
-
-.card {
-    margin: 10px;
-    width: 200px;
-    border: 1px solid #ccc;
-    box-shadow: 2px 2px 6px 0px rgba(0,0,0,0.3);
-}
-
-.card img {
-max-width: 100%;
-}
-
-.card .text {
-padding: 10px;
-padding-top: 20px;
-}
-
-.card .text > button {
-    background: gray;
-    border: 0;
-    color: white;
-    padding: 10px;
-    width: 100%;
-}
-h3 {
-    font-size: 16px;
-}
-</style>
+<link rel="stylesheet" href="~/css/masonaryEffect.css" />
 <br /><br />
-<div class="container">
-    <div class="row" data-masonry='{"percentPosition": true }'>
+@*<div class="container">*@
+    <div class="container res" style="max-width:95%" data-masonry='{"percentPosition": true }'>
         @foreach (DataDataTable data in Model)
         {
+        <a class="text-decoration-none" href="/?key=@data.DataHash">
             <div class="card">
                 @if (data.ImageData != "null" && data.ImageData != null)
                 {
                     <img src="@data.ImageData" alt="@data.Title">
                 }
                 <div class="text">
-                    <a href="/?key=@data.DataHash">
-                        <h3>@data.Title</h3>
-                    </a>
-                    <p>@data.UploadedBy</p>
+                    <h3>@data.Title</h3>
+                    <p>By @data.UploadedBy</p>
                 </div>
             </div>
+        </a>
         }
     </div>
-</div>
+@*</div>*@
 <script src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js" integrity="sha384-GNFwBvfVxBkLMJpYMOABq3c+d3KnQxudP/mGPkzpZSTYykLBNsZEnG2D9G/X/+7D" crossorigin="anonymous" async></script>

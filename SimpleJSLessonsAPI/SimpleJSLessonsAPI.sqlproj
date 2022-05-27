@@ -60,7 +60,6 @@
     <Folder Include="dbo\tables" />
   </ItemGroup>
   <ItemGroup>
-    <Build Include="dbo\tables\apiUsers.sql" />
     <Build Include="dbo\tables\userSavedLessons.sql" />
     <Build Include="dbo\tables\apiUserInformation.sql" />
     <Build Include="dbo\tables\SessionModel.sql" />
@@ -68,6 +67,8 @@
     <Build Include="dbo\tables\DataTable.sql" />
     <Build Include="dbo\tables\Authors.sql" />
     <Build Include="dbo\tables\dataDataTable.sql" />
+    <Build Include="dbo\tables\apiUser.sql" />
+    <Build Include="dbo\tables\LikesTable.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="SimpleJSLessonsAPI.refactorlog" />

@@ -10,6 +10,7 @@ namespace SimpleJSLessons.Models
     {
         public ApiUser()
         {
+            LikesTable = new HashSet<LikesTable>();
             SessionModel = new HashSet<SessionModel>();
             UserSavedDemos = new HashSet<UserSavedDemos>();
             UserSavedLessons = new HashSet<UserSavedLessons>();
@@ -28,8 +29,11 @@ namespace SimpleJSLessons.Models
         public string Username { get; set; }
         [Column("dateCreated", TypeName = "datetime")]
         public DateTime DateCreated { get; set; }
+        [Column("profileData")]
+        public string ProfileData { get; set; }
 
         public virtual ApiUserInformation ApiUserInformation { get; set; }
+        public virtual ICollection<LikesTable> LikesTable { get; set; }
         public virtual ICollection<SessionModel> SessionModel { get; set; }
         public virtual ICollection<UserSavedDemos> UserSavedDemos { get; set; }
         public virtual ICollection<UserSavedLessons> UserSavedLessons { get; set; }

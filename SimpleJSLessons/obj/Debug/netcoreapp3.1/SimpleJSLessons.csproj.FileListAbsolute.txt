@@ -87,7 +87,6 @@ C:\Users\David Nguyen\Desktop\gitHub\SimpleJSLessonsASP.net\SimpleJSLessons\bin\
 C:\Users\David Nguyen\Desktop\gitHub\SimpleJSLessonsASP.net\SimpleJSLessons\bin\Debug\netcoreapp3.1\Microsoft.EntityFrameworkCore.SqlServer.dll
 C:\Users\David Nguyen\Desktop\gitHub\SimpleJSLessonsASP.net\SimpleJSLessons\bin\Debug\netcoreapp3.1\Microsoft.Identity.Client.dll
 C:\Users\David Nguyen\Desktop\gitHub\SimpleJSLessonsASP.net\SimpleJSLessons\bin\Debug\netcoreapp3.1\Newtonsoft.Json.dll
-C:\Users\David Nguyen\Desktop\gitHub\SimpleJSLessonsASP.net\SimpleJSLessons\bin\Debug\netcoreapp3.1\Newtonsoft.Json.Bson.dll
 C:\Users\David Nguyen\Desktop\gitHub\SimpleJSLessonsASP.net\SimpleJSLessons\bin\Debug\netcoreapp3.1\System.Configuration.ConfigurationManager.dll
 C:\Users\David Nguyen\Desktop\gitHub\SimpleJSLessonsASP.net\SimpleJSLessons\bin\Debug\netcoreapp3.1\System.Runtime.Caching.dll
 C:\Users\David Nguyen\Desktop\gitHub\SimpleJSLessonsASP.net\SimpleJSLessons\bin\Debug\netcoreapp3.1\System.Security.Cryptography.ProtectedData.dll
@@ -99,7 +98,6 @@ C:\Users\David Nguyen\Desktop\gitHub\SimpleJSLessonsASP.net\SimpleJSLessons\bin\
 C:\Users\David Nguyen\Desktop\gitHub\SimpleJSLessonsASP.net\SimpleJSLessons\bin\Debug\netcoreapp3.1\runtimes\unix\lib\netcoreapp2.0\System.Runtime.Caching.dll
 C:\Users\David Nguyen\Desktop\gitHub\SimpleJSLessonsASP.net\SimpleJSLessons\bin\Debug\netcoreapp3.1\runtimes\win\lib\netcoreapp2.0\System.Runtime.Caching.dll
 C:\Users\David Nguyen\Desktop\gitHub\SimpleJSLessonsASP.net\SimpleJSLessons\bin\Debug\netcoreapp3.1\runtimes\win\lib\netstandard2.0\System.Security.Cryptography.ProtectedData.dll
-C:\Users\David Nguyen\Desktop\gitHub\SimpleJSLessonsASP.net\SimpleJSLessons\obj\Debug\netcoreapp3.1\SimpleJSLessons.csprojAssemblyReference.cache
 C:\Users\David Nguyen\Desktop\gitHub\SimpleJSLessonsASP.net\SimpleJSLessons\obj\Debug\netcoreapp3.1\SimpleJSLessons.AssemblyInfoInputs.cache
 C:\Users\David Nguyen\Desktop\gitHub\SimpleJSLessonsASP.net\SimpleJSLessons\obj\Debug\netcoreapp3.1\SimpleJSLessons.AssemblyInfo.cs
 C:\Users\David Nguyen\Desktop\gitHub\SimpleJSLessonsASP.net\SimpleJSLessons\obj\Debug\netcoreapp3.1\SimpleJSLessons.csproj.CoreCompileInputs.cache
@@ -107,8 +105,6 @@ C:\Users\David Nguyen\Desktop\gitHub\SimpleJSLessonsASP.net\SimpleJSLessons\obj\
 C:\Users\David Nguyen\Desktop\gitHub\SimpleJSLessonsASP.net\SimpleJSLessons\obj\Debug\netcoreapp3.1\SimpleJSLessons.RazorAssemblyInfo.cache
 C:\Users\David Nguyen\Desktop\gitHub\SimpleJSLessonsASP.net\SimpleJSLessons\obj\Debug\netcoreapp3.1\SimpleJSLessons.RazorAssemblyInfo.cs
 C:\Users\David Nguyen\Desktop\gitHub\SimpleJSLessonsASP.net\SimpleJSLessons\obj\Debug\netcoreapp3.1\staticwebassets\SimpleJSLessons.StaticWebAssets.Manifest.cache
-C:\Users\David Nguyen\Desktop\gitHub\SimpleJSLessonsASP.net\SimpleJSLessons\obj\Debug\netcoreapp3.1\staticwebassets\SimpleJSLessons.StaticWebAssets.xml
-C:\Users\David Nguyen\Desktop\gitHub\SimpleJSLessonsASP.net\SimpleJSLessons\obj\Debug\netcoreapp3.1\scopedcss\bundle\SimpleJSLessons.styles.css
 C:\Users\David Nguyen\Desktop\gitHub\SimpleJSLessonsASP.net\SimpleJSLessons\obj\Debug\netcoreapp3.1\SimpleJSLessons.TagHelpers.input.cache
 C:\Users\David Nguyen\Desktop\gitHub\SimpleJSLessonsASP.net\SimpleJSLessons\obj\Debug\netcoreapp3.1\SimpleJSLessons.TagHelpers.output.cache
 C:\Users\David Nguyen\Desktop\gitHub\SimpleJSLessonsASP.net\SimpleJSLessons\obj\Debug\netcoreapp3.1\SimpleJSLessons.RazorCoreGenerate.cache
@@ -129,3 +125,7 @@ C:\Users\David Nguyen\Desktop\gitHub\SimpleJSLessonsASP.net\SimpleJSLessons\obj\
 C:\Users\David Nguyen\Desktop\gitHub\SimpleJSLessonsASP.net\SimpleJSLessons\obj\Debug\netcoreapp3.1\SimpleJSLessons.pdb
 C:\Users\David Nguyen\Desktop\gitHub\SimpleJSLessonsASP.net\SimpleJSLessons\obj\Debug\netcoreapp3.1\SimpleJSLessons.genruntimeconfig.cache
 C:\Users\David Nguyen\Desktop\gitHub\SimpleJSLessonsASP.net\SimpleJSLessons\obj\Debug\netcoreapp3.1\Razor\Views\Home\search.cshtml.g.cs
+C:\Users\David Nguyen\Desktop\gitHub\SimpleJSLessonsASP.net\SimpleJSLessons\bin\Debug\netcoreapp3.1\System.Net.Http.WebRequest.dll
+C:\Users\David Nguyen\Desktop\gitHub\SimpleJSLessonsASP.net\SimpleJSLessons\obj\Debug\netcoreapp3.1\SimpleJSLessons.csproj.AssemblyReference.cache
+C:\Users\David Nguyen\Desktop\gitHub\SimpleJSLessonsASP.net\SimpleJSLessons\obj\Debug\netcoreapp3.1\SimpleJSLessons.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\David Nguyen\Desktop\gitHub\SimpleJSLessonsASP.net\SimpleJSLessons\obj\Debug\netcoreapp3.1\Razor\Views\Home\user.cshtml.g.cs

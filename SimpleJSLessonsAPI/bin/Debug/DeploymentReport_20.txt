@@ -1,0 +1,22 @@
+﻿** Highlights
+     Tables that will be rebuilt
+       None
+     Clustered indexes that will be dropped
+       None
+     Clustered indexes that will be created
+       None
+     Possible data issues
+       The column [dbo].[DataTable].[isPublic] is being dropped, data loss could occur.
+       The column [dbo].[UserSavedDemos].[isPublic] is being dropped, data loss could occur.
+
+** User actions
+     Alter
+       [dbo].[dataDataTable] (Table)
+       [dbo].[DataTable] (Table)
+       [dbo].[UserSavedDemos] (Table)
+
+** Supporting actions
+
+The column [dbo].[DataTable].[isPublic] is being dropped, data loss could occur.
+The column [dbo].[UserSavedDemos].[isPublic] is being dropped, data loss could occur.
+

@@ -20,14 +20,5 @@ function post() {
         } else {
             window.location.href = "/";
         }
-        //if(data.errorType){
-        //    if(data.errorType === 3){
-        //        document.getElementById("usernameWarning").innerHTML = data.errorMessage;
-        //    }
-        //}else if(data.token){
-        //    console.log(data.token);
-        //    setCookie("sessionid", data.token);
-        //    window.location.href = "/";
-        //}
     });
 }

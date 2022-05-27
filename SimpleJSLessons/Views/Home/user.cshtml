@@ -1,0 +1,22 @@
+@model PublicUserInformationModel
+<link rel="stylesheet" href="~/css/masonaryEffect.css" />
+<br /><br />
+<h3>@Model.username authored demos</h3>
+<div class="container res" style="max-width:95%" data-masonry='{"percentPosition": true }'>
+    @foreach (DataDataTable data in Model.AuthoredDemoed)
+    {
+    <a class="text-decoration-none" href="/?key=@data.DataHash">
+        <div class="card">
+            @if (data.ImageData != "null" && data.ImageData != null)
+            {
+                <img src="@data.ImageData" alt="@data.Title">
+            }
+            <div class="text">
+                <h3>@data.Title</h3>
+                <p>By @data.UploadedBy</p>
+            </div>
+        </div>
+    </a>
+    }
+</div>
+<script src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js" integrity="sha384-GNFwBvfVxBkLMJpYMOABq3c+d3KnQxudP/mGPkzpZSTYykLBNsZEnG2D9G/X/+7D" crossorigin="anonymous" async></script>

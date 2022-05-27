@@ -5,6 +5,8 @@
 	[dataHash] varchar(24) not null,
 	[uploadedBy] varchar(30),
 	[title] varchar(128),
+	[isPublic] int not null,
+	[uploadDate] date not null,
 	constraint [uniqueImgToData] unique(uploadedBy, dataHash),
 	constraint [validDataReference] foreign key (dataHash) references DataTable(dataHash)
 )

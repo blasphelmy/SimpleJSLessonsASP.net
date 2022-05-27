@@ -23,6 +23,10 @@ namespace SimpleJSLessons.Models
         [Column("title")]
         [StringLength(128)]
         public string Title { get; set; }
+        [Column("isPublic")]
+        public int IsPublic { get; set; }
+        [Column("uploadDate", TypeName = "date")]
+        public DateTime UploadDate { get; set; }
 
         public virtual DataTable DataHashNavigation { get; set; }
     }

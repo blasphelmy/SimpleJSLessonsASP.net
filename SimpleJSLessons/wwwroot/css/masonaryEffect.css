@@ -1,0 +1,186 @@
+﻿.card {
+    position: relative;
+    margin: 10px;
+    width: 250px;
+    border: 1px solid #ccc;
+    box-shadow: 2px 2px 6px 0px rgba(0,0,0,0.3);
+    transition: .1s ease-in-out;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.res {
+    padding-left: 100px;
+    padding-right: 100px;
+}
+
+@media only screen and (min-width: 280px) {
+    .card {
+        width: 225px;
+    }
+
+    .res {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+}
+
+@media only screen and (min-width: 360px) {
+    .card {
+        width: 140px;
+    }
+
+    .res {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+}
+
+@media only screen and (min-width: 375px) {
+    .card {
+        width: 148px;
+    }
+
+    .res {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+}
+
+@media only screen and (min-width: 390px) {
+    .card {
+        width: 155px;
+    }
+
+    .res {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+}
+
+@media only screen and (min-width: 412px) {
+    .card {
+        width: 165px;
+    }
+
+    .res {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+}
+
+@media only screen and (min-width: 414px) {
+    .card {
+        width: 165px;
+    }
+
+    .res {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+}
+
+@media only screen and (min-width: 480px) {
+    .card {
+        width: 150px;
+    }
+
+    .res {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+}
+
+@media only screen and (min-width: 500px) {
+    .card {
+        width: 198px;
+    }
+}
+
+@media only screen and (min-width: 540px) {
+    .card {
+        width: 225px;
+    }
+}
+
+@media only screen and (min-width: 600px) {
+    .card {
+        width: 200px;
+    }
+}
+
+@media only screen and (min-width: 640px) {
+    .card {
+        width: 170px;
+    }
+}
+
+@media only screen and (min-width: 768px) {
+    .card {
+        width: 215px;
+    }
+
+    .res {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+}
+
+@media only screen and (min-width: 820px) {
+    .card {
+        width: 225px;
+    }
+
+    .res {
+        padding-left: 20px;
+        padding-right: 10px;
+    }
+}
+
+@media only screen and (min-width: 912px) {
+    .card {
+        width: 180px;
+    }
+
+    .res {
+        padding-left: 20px;
+        padding-right: 10px;
+    }
+}
+
+@media only screen and (min-width: 1024px) {
+    .card {
+        width: 290px;
+    }
+}
+
+@media only screen and (min-width: 1200px) {
+    .card {
+        width: 270px;
+    }
+}
+
+.card:hover {
+    transform: scale(1.05);
+}
+
+.card img {
+    max-width: 100%;
+}
+
+.card .text {
+    padding: 10px;
+    padding-top: 20px;
+}
+
+    .card .text > button {
+        background: gray;
+        border: 0;
+        color: white;
+        padding: 10px;
+        width: 100%;
+    }
+
+h3 {
+    font-size: 16px;
+}

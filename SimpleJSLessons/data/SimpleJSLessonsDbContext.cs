@@ -21,6 +21,7 @@ namespace SimpleJSLessons.data
         public virtual DbSet<Authors> Authors { get; set; }
         public virtual DbSet<DataDataTable> DataDataTable { get; set; }
         public virtual DbSet<DataTable> DataTable { get; set; }
+        public virtual DbSet<LikesTable> LikesTable { get; set; }
         public virtual DbSet<SessionModel> SessionModel { get; set; }
         public virtual DbSet<UserSavedDemos> UserSavedDemos { get; set; }
         public virtual DbSet<UserSavedLessons> UserSavedLessons { get; set; }
@@ -39,14 +40,16 @@ namespace SimpleJSLessons.data
             modelBuilder.Entity<ApiUser>(entity =>
             {
                 entity.HasIndex(e => e.AccountHash)
-                    .HasName("UQ__apiUser__2EEAD09C377847D0")
+                    .HasName("UQ__apiUser__2EEAD09CBDBA9FF4")
                     .IsUnique();
 
                 entity.HasIndex(e => e.Username)
-                    .HasName("UQ__apiUser__F3DBC572DD318E88")
+                    .HasName("UQ__apiUser__F3DBC572B8FED14C")
                     .IsUnique();
 
                 entity.Property(e => e.AccountHash).IsUnicode(false);
+
+                entity.Property(e => e.ProfileData).IsUnicode(false);
 
                 entity.Property(e => e.Username).IsUnicode(false);
             });
@@ -54,7 +57,7 @@ namespace SimpleJSLessons.data
             modelBuilder.Entity<ApiUserInformation>(entity =>
             {
                 entity.HasIndex(e => e.AccountHash)
-                    .HasName("UQ__apiUserI__2EEAD09C6FAEA3AD")
+                    .HasName("UQ__apiUserI__2EEAD09C43BA11FB")
                     .IsUnique();
 
                 entity.Property(e => e.AccountHash).IsUnicode(false);
@@ -114,7 +117,7 @@ namespace SimpleJSLessons.data
             modelBuilder.Entity<DataTable>(entity =>
             {
                 entity.HasIndex(e => e.DataHash)
-                    .HasName("UQ__DataTabl__13869B631BA16147")
+                    .HasName("UQ__DataTabl__13869B63FA812ACE")
                     .IsUnique();
 
                 entity.Property(e => e.Data).IsUnicode(false);
@@ -122,6 +125,24 @@ namespace SimpleJSLessons.data
                 entity.Property(e => e.DataHash).IsUnicode(false);
 
                 entity.Property(e => e.Title).IsUnicode(false);
+            });
+
+            modelBuilder.Entity<LikesTable>(entity =>
+            {
+                entity.HasIndex(e => new { e.DataHash, e.Username })
+                    .HasName("unique_likes")
+                    .IsUnique();
+
+                entity.Property(e => e.DataHash).IsUnicode(false);
+
+                entity.Property(e => e.Username).IsUnicode(false);
+
+                entity.HasOne(d => d.UsernameNavigation)
+                    .WithMany(p => p.LikesTable)
+                    .HasPrincipalKey(p => p.Username)
+                    .HasForeignKey(d => d.Username)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("reference_to_realuser");
             });
 
             modelBuilder.Entity<SessionModel>(entity =>

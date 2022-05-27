@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
-using SimpleJSLessons.Models;
 using SimpleJSLessons.data;
 using System.Security.Cryptography;
 using System.Text;
@@ -31,7 +30,9 @@ namespace SimpleJSLessons.Controllers
             string accountHash = "";
             try
             {
-                accountHash = context.SessionModel.FromSqlRaw($"use SimpleJSLessonsAPIData select * from SessionModel where sessionID = '{cookieValueFromReq}'").ToList()[0].AccountHash;
+                accountHash = context.SessionModel.FromSqlRaw(@$"use SimpleJSLessonsAPIData 
+                                                                select * from SessionModel 
+                                                                where sessionID = '{cookieValueFromReq}'").ToList()[0].AccountHash;
             }
             catch
             {
@@ -161,23 +162,33 @@ namespace SimpleJSLessons.Controllers
                 string accountHash = "";
                 try
                 {
-                    accountHash = context.SessionModel.FromSqlRaw($"use SimpleJSLessonsAPIData select * from SessionModel where sessionID = '{cookieValueFromReq}'").ToList()[0].AccountHash;
+                    accountHash = context.SessionModel.FromSqlRaw(@$"use SimpleJSLessonsAPIData 
+                                                                select * from SessionModel 
+                                                                where sessionID = '{cookieValueFromReq}'").ToList()[0].AccountHash;
                     ApiUser thisUser = context.ApiUser.FirstOrDefault((user) => user.AccountHash == accountHash);
                     if (thisUser != null)
                     {
                         newData.hashcode = ComputeSha256Hash(newData.data + thisUser.Username).Substring(0, 6);
                         try
                         {
-                            context.Database.ExecuteSqlCommand($"use SimpleJSLessonsAPIData insert into DataTable(dataHash, data, title, dateCreated) values({newData.hashcode},{newData.data},{newData.title}, {DateTime.Now})");
+#pragma warning disable CS0618 // Type or member is obsolete
+                            context.Database.ExecuteSqlCommand(@$"use SimpleJSLessonsAPIData 
+                                                            insert into DataTable(dataHash, data, title, dateCreated) 
+                                                            values({newData.hashcode},{newData.data},{newData.title}, {DateTime.Now})");
+#pragma warning restore CS0618 // Type or member is obsolete
                         }
                         catch
                         {
                             System.Console.WriteLine("Data Alredy Exists!");
                         }
-                        context.Database.ExecuteSqlCommand($"use SimpleJSLessonsAPIData insert into Authors(dataHash, username, dateAuthored) values ({newData.hashcode},{thisUser.Username},{DateTime.Now})");
+                        context.Database.ExecuteSqlCommand(@$"use SimpleJSLessonsAPIData 
+                                                        insert into Authors(dataHash, username, dateAuthored) 
+                                                        values ({newData.hashcode},{thisUser.Username},{DateTime.Now})");
                         try
                         {
-                            context.Database.ExecuteSqlCommand($"use SimpleJSLessonsAPIData insert into dataDataTable(imageData, dataHash, uploadedBy, title) values ({newData.imageData},{newData.hashcode},{thisUser.Username}, {newData.title})");
+                            context.Database.ExecuteSqlCommand(@$"use SimpleJSLessonsAPIData 
+                                                            insert into dataDataTable(imageData, dataHash, uploadedBy, title, uploadDate, isPublic) 
+                                                            values ({newData.imageData},{newData.hashcode},{thisUser.Username}, {newData.title}, {DateTime.Now}, 0)");
                         }
                         catch
                         {
@@ -185,12 +196,16 @@ namespace SimpleJSLessons.Controllers
                         }
                         if (newData.type == "demo")
                         {
-                            context.Database.ExecuteSqlCommand($"use SimpleJSLessonsAPIData insert into UserSavedDemos(accountHash, demoHash, demoTitle) values ({thisUser.AccountHash},{newData.hashcode},{newData.title})");
+                            context.Database.ExecuteSqlCommand(@$"use SimpleJSLessonsAPIData 
+                                                            insert into UserSavedDemos(accountHash, demoHash, demoTitle) 
+                                                            values ({thisUser.AccountHash},{newData.hashcode},{newData.title})");
                             return Json(0);
                         }
                         else if (newData.type == "lessonAnswers")
                         {
-                            context.Database.ExecuteSqlCommand($"use SimpleJSLessonsAPIData insert into UserSavedLessons(accountHash, lessonHash, lessonTitle) values ({thisUser.AccountHash},{newData.hashcode},{newData.title})");
+                            context.Database.ExecuteSqlCommand(@$"use SimpleJSLessonsAPIData 
+                                                        insert into UserSavedLessons(accountHash, lessonHash, lessonTitle) 
+                                                        values ({thisUser.AccountHash},{newData.hashcode},{newData.title})");
                             return Json(0);
                         }
                     }
@@ -198,10 +213,14 @@ namespace SimpleJSLessons.Controllers
                     {
                         try
                         {
-                            context.Database.ExecuteSqlCommand($"use SimpleJSLessonsAPIData insert into DataTable(dataHash, data, title, dateCreated) values({newData.hashcode},{newData.data},{newData.title}, {DateTime.Now})");
+                            context.Database.ExecuteSqlCommand(@$"use SimpleJSLessonsAPIData 
+                                                            insert into DataTable(dataHash, data, title, dateCreated) 
+                                                            values({newData.hashcode},{newData.data},{newData.title}, {DateTime.Now})");
                             try
                             {
-                                context.Database.ExecuteSqlCommand($"use SimpleJSLessonsAPIData insert into dataDataTable(imageData, dataHash, uploadedBy, title) values ({newData.imageData},{newData.hashcode}, 'anonymous', {newData.title})");
+                                context.Database.ExecuteSqlCommand(@$"use SimpleJSLessonsAPIData 
+                                                                insert into dataDataTable(imageData, dataHash, uploadedBy, title, uploadDate, isPublic) 
+                                                                values ({newData.imageData},{newData.hashcode}, 'anonymous', {newData.title}, {DateTime.Now}, 1)");
                             }
                             catch
                             {
@@ -220,8 +239,12 @@ namespace SimpleJSLessons.Controllers
                 {
                     try
                     {
-                        context.Database.ExecuteSqlCommand($"use SimpleJSLessonsAPIData insert into DataTable(dataHash, data, title, dateCreated) values({newData.hashcode},{newData.data},{newData.title}, {DateTime.Now})");
-                        context.Database.ExecuteSqlCommand($"use SimpleJSLessonsAPIData insert into dataDataTable(imageData, dataHash, uploadedBy, title) values ({newData.imageData},{newData.hashcode}, 'anonymous', {newData.title})");
+                        context.Database.ExecuteSqlCommand(@$"use SimpleJSLessonsAPIData 
+                                                            insert into DataTable(dataHash, data, title, dateCreated) 
+                                                            values({newData.hashcode},{newData.data},{newData.title}, {DateTime.Now})");
+                        context.Database.ExecuteSqlCommand(@$"use SimpleJSLessonsAPIData 
+                                                            insert into dataDataTable(imageData, dataHash, uploadedBy, title, uploadDate, isPublic) 
+                                                            values ({newData.imageData},{newData.hashcode}, 'anonymous', {newData.title}, {DateTime.Now}, 1)");
                         return Json(1);
                     }
                     catch
@@ -269,34 +292,38 @@ namespace SimpleJSLessons.Controllers
                 
                 foreach(DataDataTable data in context.DataDataTable)
                 {
-                    double weight = 0;
-                    double multi = 1;
-                    foreach(string substring in searchTerms)
+                    if(data.IsPublic == 1)
                     {
-                        multi = 1;
-                        switch (substring)
+                        double weight = 0;
+                        double multi = 1;
+                        foreach (string substring in searchTerms)
                         {
-                            case "the": multi = .5; break;
-                            case "of": multi = .7; break;
-                            case "is": multi = .5; break;
+                            multi = 1;
+                            switch (substring)
+                            {
+                                case "the": multi = .5; break;
+                                case "of": multi = .7; break;
+                                case "is": multi = .5; break;
+                            }
+                            string newRegex = "(" + substring.Replace("\"", "") + ")";
+                            if (Regex.Matches($"{data.DataHash}", "\\b(" + substring.Replace("\"", "") + ")\\b", RegexOptions.IgnoreCase).Count > 0)
+                            {
+                                weight = (weight + 100) * multi;
+                            }
+                            if (Regex.Matches(data.Title, newRegex, RegexOptions.IgnoreCase).Count > 0)
+                            {
+                                weight = (weight + 15) * multi;
+                            }
+                            if (Regex.Matches(data.UploadedBy, newRegex, RegexOptions.IgnoreCase).Count > 0)
+                            {
+                                weight = (weight + 50) * multi;
+                            }
+                            if (weight > 0)
+                            {
+                                searchResults.Add(new SearchResultsModel(data, weight));
+                            }
                         }
-                        string newRegex = "(" + substring.Replace("\"", "") + ")";
-                        if (Regex.Matches($"{data.DataHash}", "\\b(" + substring.Replace("\"", "") + ")\\b", RegexOptions.IgnoreCase).Count > 0)
-                        {
-                            weight = (weight + 100) * multi;
-                        }
-                        if (Regex.Matches(data.Title, newRegex, RegexOptions.IgnoreCase).Count > 0)
-                        {
-                            weight = (weight + 15) * multi;
-                        }
-                        if (Regex.Matches(data.UploadedBy, newRegex, RegexOptions.IgnoreCase).Count > 0)
-                        {
-                            weight = (weight + 50) * multi;
-                        }
-                        if(weight > 0)
-                        {
-                            searchResults.Add(new SearchResultsModel(data, weight));
-                        }
+
                     }
                 }
                 if(searchResults.Count > 0)
@@ -312,7 +339,24 @@ namespace SimpleJSLessons.Controllers
             }
         return View(context.DataDataTable.FromSqlRaw(@$"use SimpleJSLessonsAPIData 
                                                     select top(10) * from dataDataTable
+                                                    where isPublic = 1
                                                     order by id desc").ToList());
+        }
+        [HttpGet]
+        public IActionResult user(string username)
+        {
+            string cookieValueFromReq = Request.Cookies["sessionid"];
+
+            if (cookieValueFromReq != null && getUserName(cookieValueFromReq) != null)
+            {
+                ViewBag.firstName = getUserName(cookieValueFromReq);
+            }
+            if (username == null)
+            {
+                return RedirectToAction("index", "home");
+            }
+            PublicUserInformationModel requestedUser = new PublicUserInformationModel(context, username);
+            return View(requestedUser);
         }
         //pulled this functon from a tutorial somewhere. no need to write myself
         static string ComputeSha256Hash(string rawData)

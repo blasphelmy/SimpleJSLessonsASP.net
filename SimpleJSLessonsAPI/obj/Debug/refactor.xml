@@ -14,4 +14,18 @@
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="demoHash" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="c2cc0194-d326-4b9a-8c3b-4f8fda3bf0be" ChangeDateTime="05/26/2022 11:24:36" xmlns="http://schemas.microsoft.com/sqlserver/dac/Serialization/2012/02">
+    <Property Name="ElementName" Value="[dbo].[DataTable].[public]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[DataTable]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="isPublic" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="af476e26-774d-42ac-b208-fac1078f679e" ChangeDateTime="05/26/2022 11:24:49" xmlns="http://schemas.microsoft.com/sqlserver/dac/Serialization/2012/02">
+    <Property Name="ElementName" Value="[dbo].[UserSavedDemos].[public]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[UserSavedDemos]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="isPublic" />
+  </Operation>
 </Operations>
