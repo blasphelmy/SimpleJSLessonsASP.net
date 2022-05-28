@@ -23,7 +23,7 @@ namespace SimpleJSLessons.Controllers
         {
             this.context = context;
         }
-        public string getUserName(string cookie)
+        public ApiUser getUser(string cookie)
         {
             UserModel thisUser = new UserModel();
             string cookieValueFromReq = Request.Cookies["sessionid"];
@@ -40,8 +40,8 @@ namespace SimpleJSLessons.Controllers
             }
             if (accountHash != null)
             {
-                string firstname = context.ApiUserInformation.FromSqlRaw($"use SimpleJSLessonsAPIData select * from apiUserInformation where accountHash = '{accountHash}'").ToList()[0].FirstName;
-                return firstname;
+                ApiUser user = context.ApiUser.FromSqlRaw($"use SimpleJSLessonsAPIData select * from apiUser where accountHash = '{accountHash}'").ToList()[0];
+                return user;
             }
             return null;
         }
@@ -49,9 +49,9 @@ namespace SimpleJSLessons.Controllers
         public IActionResult Index()
         {
             string cookieValueFromReq = Request.Cookies["sessionid"];
-            if(cookieValueFromReq != null && getUserName(cookieValueFromReq) != null)
+            if(cookieValueFromReq != null && getUser(cookieValueFromReq) != null)
             {
-                ViewBag.firstName = getUserName(cookieValueFromReq);
+                ViewBag.firstName = getUser(cookieValueFromReq).ApiUserInformation.FirstName;
             }
             return View();
         }
@@ -59,9 +59,9 @@ namespace SimpleJSLessons.Controllers
         { 
             string cookieValueFromReq = Request.Cookies["sessionid"];
 
-            if(cookieValueFromReq != null && getUserName(cookieValueFromReq) != null)
+            if(cookieValueFromReq != null && getUser(cookieValueFromReq) != null)
             {
-                ViewBag.firstName = getUserName(cookieValueFromReq);
+                ViewBag.firstName = getUser(cookieValueFromReq).ApiUserInformation.FirstName;
                 string accountHash = context.SessionModel.FromSqlRaw($"use SimpleJSLessonsAPIData select * from SessionModel where sessionID = '{cookieValueFromReq}'").ToList()[0].AccountHash;
                 ApiUser currentUser = context.ApiUser.FirstOrDefault((user) => user.AccountHash == accountHash);
                 return View(currentUser);
@@ -73,7 +73,7 @@ namespace SimpleJSLessons.Controllers
         public IActionResult createAccount()
         {
             string cookieValueFromReq = Request.Cookies["sessionid"];
-            if(cookieValueFromReq != null && getUserName(cookieValueFromReq) != null)
+            if(cookieValueFromReq != null && getUser(cookieValueFromReq) != null)
             {
                 return RedirectToAction("myAccount", "Home");
             }
@@ -126,7 +126,7 @@ namespace SimpleJSLessons.Controllers
                 var rand = new Random();
                 string newSessionHash = ComputeSha256Hash(user[0].Username + user[0].AccountHash + rand.Next() + DateTime.Now);
                 context.Database.ExecuteSqlCommand($"use SimpleJSLessonsAPIData insert into SessionModel(sessionID, accountHash) values({newSessionHash}, {accountHash})");
-                SetCookie("sessionid", newSessionHash, 9999);
+                SetCookie("sessionid", newSessionHash, 15);
                 return Json(1);
             }
             else
@@ -278,9 +278,9 @@ namespace SimpleJSLessons.Controllers
             string cookieValueFromReq = Request.Cookies["sessionid"];
             ViewBag.Search = searchTerm;
 
-            if (cookieValueFromReq != null && getUserName(cookieValueFromReq) != null)
+            if (cookieValueFromReq != null && getUser(cookieValueFromReq) != null)
             {
-                ViewBag.firstName = getUserName(cookieValueFromReq);
+                ViewBag.firstName = getUser(cookieValueFromReq).ApiUserInformation.FirstName;
             }
             string[] searchTerms = null;
             if (searchTerm != null)
@@ -347,9 +347,9 @@ namespace SimpleJSLessons.Controllers
         {
             string cookieValueFromReq = Request.Cookies["sessionid"];
 
-            if (cookieValueFromReq != null && getUserName(cookieValueFromReq) != null)
+            if (cookieValueFromReq != null && getUser(cookieValueFromReq) != null)
             {
-                ViewBag.firstName = getUserName(cookieValueFromReq);
+                ViewBag.firstName = getUser(cookieValueFromReq).ApiUserInformation.FirstName;
             }
             if (username == null)
             {
@@ -357,6 +357,39 @@ namespace SimpleJSLessons.Controllers
             }
             PublicUserInformationModel requestedUser = new PublicUserInformationModel(context, username);
             return View(requestedUser);
+        }
+        [HttpPost]
+        public IActionResult updateInformation(string[] changeData) //[0] = 1: change privacy 2: update title
+                                                                    //[1] = hash of demo
+        {                                                           //[2] = data
+            string cookieValueFromReq = Request.Cookies["sessionid"];
+            ApiUser verifiedUser = getUser(cookieValueFromReq);
+            if(verifiedUser != null)
+            {
+                UserSavedDemos demo = verifiedUser.UserSavedDemos.FirstOrDefault((demo) => demo.DemoHash == changeData[1]);
+                if(demo != null)
+                {
+                    if (changeData[0] == "1")
+                    {
+                        int publicity = 0; //defaults to private if try catch fails for some reson
+                        try
+                        {
+                            publicity = int.Parse(changeData[2]);
+                        }
+                        catch
+                        {
+                            return Json(-1);
+                        }
+                        context.Database.ExecuteSqlCommand($@"use SimpleJSLessonsAPIData
+                                                              update dataDataTable
+                                                              set isPublic = {publicity}
+                                                              where dataHash = '{changeData[1]}'
+                                                              and uploadedBy = '{verifiedUser.Username}'");
+                        return Json(1);
+                    }
+                }
+            } 
+           return Json(-1);
         }
         //pulled this functon from a tutorial somewhere. no need to write myself
         static string ComputeSha256Hash(string rawData)

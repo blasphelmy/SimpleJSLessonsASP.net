@@ -1,17 +1,24 @@
 ﻿@model ApiUser
+<link rel="stylesheet" href="~/css/masonaryEffect.css" />
 <br /><br />
       <div class="container">
           <p>Hello @ViewBag.firstName</p>
           <p>Your Saved Demo's</p>
-          <div class="container d-flex">
+        <div class="container res" style="max-width:95%" data-masonry='{"percentPosition": true }'>
             @foreach (UserSavedDemos demo in Model.UserSavedDemos)
             {
-                var url = "/?key=" + demo.DemoHash.ToString();
-                <div class="card" style="padding: 20px">
-                  <a href="@url"><p>@demo.DemoTitle</p></a>
+                <div class="card">
+                    @if (demo.DemoHashNavigation.DataDataTable.ToList()[0].ImageData != "null" && demo.DemoHashNavigation.DataDataTable.ToList()[0].ImageData != null)
+                    {
+                        <img src="@demo.DemoHashNavigation.DataDataTable.ToList()[0].ImageData" alt="@demo.DemoTitle">
+                    }
+                    <div class="text">
+                        <a class="text-decoration-none" href="/?key=@demo.DemoHash"><h3>@demo.DemoTitle</h3></a>
+                        <p style="color: black; font-size: 10px">By @demo.DemoHashNavigation.DataDataTable.ToList()[0].UploadDate.ToShortDateString()</p>
+                    </div>
                 </div>
             }
-          </div>
+        </div>
           <p>Your completed Lessons</p>
           <div class="container d-flex">
               @foreach (UserSavedLessons lesson in Model.UserSavedLessons)
@@ -23,3 +30,6 @@
               }
           </div>
       </div>
+
+<br /><br />
+<script src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js" integrity="sha384-GNFwBvfVxBkLMJpYMOABq3c+d3KnQxudP/mGPkzpZSTYykLBNsZEnG2D9G/X/+7D" crossorigin="anonymous" async></script>
