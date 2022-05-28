@@ -7,8 +7,18 @@
     transition: .1s ease-in-out;
     border-radius: 8px;
     overflow: hidden;
+    cursor: pointer;
 }
-
+.scale:hover {
+    transform: scale(1.05);
+}
+.clicked {
+    z-index: 10;
+    transform: scale(1) rotate3d(0, 1, 0, 180deg);
+}
+.hide {
+    display: none;
+}
 .res {
     padding-left: 100px;
     padding-right: 100px;
@@ -158,10 +168,6 @@
     .card {
         width: 270px;
     }
-}
-
-.card:hover {
-    transform: scale(1.05);
 }
 
 .card img {

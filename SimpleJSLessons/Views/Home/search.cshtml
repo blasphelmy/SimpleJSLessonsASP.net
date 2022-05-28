@@ -5,20 +5,24 @@
     <div class="container res" style="max-width:95%" data-masonry='{"percentPosition": true }'>
         @foreach (DataDataTable data in Model)
         {
-        <a class="text-decoration-none" href="/?key=@data.DataHash">
-            <div class="card">
+        <div class="card democard scale" id="@data.DataHash">
+            <div style="position:relative" id="@(data.DataHash + "content")">
                 @if (data.ImageData != "null" && data.ImageData != null)
                 {
-                    <img src="@data.ImageData" alt="@data.Title">
+                    <img src="@data.ImageData" alt="@data.DataHashNavigation.Title">
                 }
                 <div class="text">
-                    <h3>@data.Title</h3>
-                    <p style="color: black; font-size: 14px">By @data.UploadedBy</p>
-                    <p style="color: gray; font-size: 10px">On @data.UploadDate.ToShortDateString()</p>
+                    <a class="text-decoration-none" href="/?key=@data.DataHash"><h3>@data.DataHashNavigation.Title</h3></a>
+                    <p style="color: black; font-size: 10px">Created @data.UploadDate.ToShortDateString()</p>
                 </div>
             </div>
-        </a>
+            <div class="hide" id="@(data.DataHash + "btnGroups")" style="position:relative;transform: rotate3d(0,1,0, 180deg)">
+                <button type="button" class="btn btn-primary btn-xs btn-block editBtns">Block level button</button>
+                <button type="button" class="btn btn-secondary btn-xs btn-block editBtns">Block level button</button>
+            </div>
+        </div>
         }
     </div>
 @*</div>*@
+<script src="~/js/cardviews.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js" integrity="sha384-GNFwBvfVxBkLMJpYMOABq3c+d3KnQxudP/mGPkzpZSTYykLBNsZEnG2D9G/X/+7D" crossorigin="anonymous" async></script>
