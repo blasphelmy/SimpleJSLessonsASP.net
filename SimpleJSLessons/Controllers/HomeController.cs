@@ -12,6 +12,7 @@ using System.Text;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Http;
 using System.Text.RegularExpressions;
+using Microsoft.Data.SqlClient;
 
 namespace SimpleJSLessons.Controllers
 {
@@ -359,32 +360,48 @@ namespace SimpleJSLessons.Controllers
             return View(requestedUser);
         }
         [HttpPost]
-        public IActionResult updateInformation(string[] changeData) //[0] = 1: change privacy 2: update title
+        public IActionResult updateInformation([FromBody] ChangeData changeData) //[0] = 1: change privacy 2: update title
                                                                     //[1] = hash of demo
         {                                                           //[2] = data
             string cookieValueFromReq = Request.Cookies["sessionid"];
             ApiUser verifiedUser = getUser(cookieValueFromReq);
+            ChangeData newData = changeData;
             if(verifiedUser != null)
             {
-                UserSavedDemos demo = verifiedUser.UserSavedDemos.FirstOrDefault((demo) => demo.DemoHash == changeData[1]);
+                UserSavedDemos demo = verifiedUser.UserSavedDemos.FirstOrDefault((demo) => demo.DemoHash == changeData.hash);
                 if(demo != null)
                 {
-                    if (changeData[0] == "1")
+                    if (newData.operation == 1)
                     {
                         int publicity = 0; //defaults to private if try catch fails for some reson
                         try
                         {
-                            publicity = int.Parse(changeData[2]);
+                            publicity = int.Parse(changeData.data);
                         }
                         catch
                         {
                             return Json(-1);
                         }
+                        //context.Database.ExecuteSqlCommand($@"use SimpleJSLessonsAPIData
+                        //                                      update dataDataTable
+                        //                                      set isPublic = {publicity}
+                        //                                      where dataHash = {changeData.hash}
+                        //                                      and uploadedBy = {verifiedUser.Username}");
+                        var privacy = new SqlParameter("@isPublic", publicity);
                         context.Database.ExecuteSqlCommand($@"use SimpleJSLessonsAPIData
-                                                              update dataDataTable
-                                                              set isPublic = {publicity}
-                                                              where dataHash = '{changeData[1]}'
-                                                              and uploadedBy = '{verifiedUser.Username}'");
+                                                            update dataDataTable
+                                                            set isPublic = @isPublic
+                                                            where dataHash = '{newData.hash}'
+                                                            and uploadedBy = '{verifiedUser.Username}'", privacy);
+                        return Json(1);
+                    }else if(newData.operation == 2)
+                    {
+                        var imagedata = new SqlParameter("@imageData", newData.data);
+                        context.Database.ExecuteSqlCommand($@"use SimpleJSLessonsAPIData
+                                                            update dataDataTable
+                                                            set imageData = @imageData
+                                                            where dataHash = '{newData.hash}'
+                                                            and uploadedBy = '{verifiedUser.Username}'", imagedata);
                         return Json(1);
                     }
                 }

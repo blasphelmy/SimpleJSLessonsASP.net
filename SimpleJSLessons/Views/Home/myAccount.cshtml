@@ -4,6 +4,7 @@
     <p>Hello @ViewBag.firstName</p>
     <p>Your Saved Demo's</p>
 </div>
+<input id="uploadImgLink" accept=".png,.jpg,.jpeg" type="file" onchange="encodeImageFileAsURL(this)" style="display: none;"/>
 <div class="container res" style="max-width:95%" data-masonry='{"percentPosition": true }'>
 @foreach (UserSavedDemos demo in Model.UserSavedDemos)
 {
@@ -11,16 +12,25 @@
         <div style="position:relative" id="@(demo.DemoHash + "content")">
             @if (demo.DemoHashNavigation.DataDataTable.ToList()[0].ImageData != "null" && demo.DemoHashNavigation.DataDataTable.ToList()[0].ImageData != null)
             {
-                <img src="@demo.DemoHashNavigation.DataDataTable.ToList()[0].ImageData" alt="@demo.DemoTitle">
-            }
-            <div class="text">
+                    <img src="@demo.DemoHashNavigation.DataDataTable.ToList()[0].ImageData" alt="@demo.DemoTitle">
+                }
+                else
+                {
+                    <img src="~/img/placeholder.png" alt="@demo.DemoTitle">
+                }
+                <div class="text">
                 <a class="text-decoration-none" href="/?key=@demo.DemoHash"><h3>@demo.DemoTitle</h3></a>
                 <p style="color: black; font-size: 10px">Created @demo.DemoHashNavigation.DataDataTable.ToList()[0].UploadDate.ToShortDateString()</p>
             </div>
         </div>
-        <div class="hide" id="@(demo.DemoHash + "btnGroups")" style="position:relative;transform: rotate3d(0,1,0, 180deg)">
-            <button type="button" class="btn btn-primary btn-xs btn-block editBtns">Block level button</button>
-            <button type="button" class="btn btn-secondary btn-xs btn-block editBtns">Block level button</button>
+        <div class="hide row align-items-center btnGroupcard" id="@(demo.DemoHash + "btnGroups")" style="position:relative;transform: rotate3d(0,1,0, 180deg)">
+            <div class="col">
+                <div class="text-center">
+                    <span class="btnGroupbtn editImageBtnGroup" id="img_@demo.DemoHash"><p>Edit Image</p></span>
+                    <span class="btnGroupbtn setPrivacyBtnGroup" id="pvy_@demo.DemoHash"><p>Set privacy</p></span>
+                    <span class="btnGroupbtn delete"><p>Delete</p></span>
+                </div>
+            </div>
         </div>
     </div>
 }
@@ -35,7 +45,7 @@
         </div>
     }
 </div>
-
+<style></style>
 <br /><br />
 <script src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js" integrity="sha384-GNFwBvfVxBkLMJpYMOABq3c+d3KnQxudP/mGPkzpZSTYykLBNsZEnG2D9G/X/+7D" crossorigin="anonymous" async></script>
-<script src="~/js/cardviews.js"></script>
+<script src="~/js/myAccount.js"></script>

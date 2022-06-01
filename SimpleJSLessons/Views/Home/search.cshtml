@@ -10,15 +10,15 @@
                 @if (data.ImageData != "null" && data.ImageData != null)
                 {
                     <img src="@data.ImageData" alt="@data.DataHashNavigation.Title">
+                }else
+                {
+                    <img src="~/img/placeholder.png" alt="@data.Title">
                 }
                 <div class="text">
                     <a class="text-decoration-none" href="/?key=@data.DataHash"><h3>@data.DataHashNavigation.Title</h3></a>
+                     <p style="color: black; font-size: 13px">Authored by @data.UploadedBy</p>
                     <p style="color: black; font-size: 10px">Created @data.UploadDate.ToShortDateString()</p>
                 </div>
-            </div>
-            <div class="hide" id="@(data.DataHash + "btnGroups")" style="position:relative;transform: rotate3d(0,1,0, 180deg)">
-                <button type="button" class="btn btn-primary btn-xs btn-block editBtns">Block level button</button>
-                <button type="button" class="btn btn-secondary btn-xs btn-block editBtns">Block level button</button>
             </div>
         </div>
         }
