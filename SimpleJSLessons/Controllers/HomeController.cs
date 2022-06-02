@@ -264,7 +264,7 @@ namespace SimpleJSLessons.Controllers
             if(data == null)
             {
                 System.Console.WriteLine("Invalid data");
-                return Json(1);
+                return Json(-1);
             }
             return Json(data.Data);
         }
@@ -382,11 +382,6 @@ namespace SimpleJSLessons.Controllers
                         {
                             return Json(-1);
                         }
-                        //context.Database.ExecuteSqlCommand($@"use SimpleJSLessonsAPIData
-                        //                                      update dataDataTable
-                        //                                      set isPublic = {publicity}
-                        //                                      where dataHash = {changeData.hash}
-                        //                                      and uploadedBy = {verifiedUser.Username}");
                         var privacy = new SqlParameter("@isPublic", publicity);
                         context.Database.ExecuteSqlCommand($@"use SimpleJSLessonsAPIData
                                                             update dataDataTable
