@@ -1,11 +1,89 @@
-﻿<iframe scrolling="no" id="iFrameMain" name="iFrameMain" src="" frameborder="0"
-        style="top:0px; left:0; bottom:0; right:0; width:100%; height:100%; border:none; margin:0; padding:0; overflow:hidden;"
-        sandbox="allow-scripts allow-same-origin">
-</iframe>
+﻿<div class="row">
+    <div class="col-10">
+        <iframe scrolling="no" id="iFrameMain" name="iFrameMain" src="" frameborder="0"
+                style="position:relative; display:block;width:calc(100% + 15px);top:0px; right:15px; bottom:0; right:0; height:100%; border:none; margin:0; padding:0; overflow:hidden;"
+                sandbox="allow-scripts allow-same-origin">
+        </iframe>
+    </div>
+    <div class="col-2">
+
+        <div style="position:relative; width:calc(100% + 15px); right: 15px; height: 100vh; padding:10px; padding-top: 55px; color: rgb(255, 245, 245); background-color:rgb(61, 61, 61);
+                     overflow: scroll; padding-bottom: 100px;">
+
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="basic-addon3" readonly>Created By</span>
+                </div>
+                <input type="text" class="form-control" id="basic-url" value="@ViewBag.AuthoredBy" aria-describedby="basic-addon3">
+            </div>
+
+            @foreach (CommentsTable comment in ViewBag.thisComments)
+            {
+                <div class="comment">
+                    <p><a href='/home/user?username=@comment.CommentAuthorUsername'>@comment.CommentAuthorUsername says on @comment.Date.ToShortTimeString()</a></p>
+                    <p>@comment.Comment</p>
+                </div>
+            }
+
+            @if (ViewBag.authorized == 1)
+            {
+                <div class="input-group input-group-sm">
+                    <textarea id="submitcomment" class="form-control" aria-label="With textarea" rows="2"></textarea>
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary btn-sm" type="button" onclick="submitComment()">Submit</button>
+                    </div>
+                </div>
+            }
+
+            </div>
+    </div>
+</div>
+
 <script src="/js/iFrameHelper.js"></script>
 <style>
     body,
     html {
         overflow: hidden;
     }
+
+    .comment {
+        background: rgb(71, 71, 71);
+        border-radius: 8px;
+        margin-bottom: 20px;
+        overflow-wrap: break-word;
+    }
+
+        .comment > p {
+            font-family: "Arial", Times, serif;
+            font-size: 13px;
+        }
+
+        .comment > p, h1, h2, h3 {
+            padding: 10px;
+            margin: 0;
+        }
 </style>
+@if (ViewBag.authorized == 1)
+{
+    <script>
+    function submitComment(e) {
+        var newComment = document.getElementById("submitcomment").value;
+        let newPost = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                dataHash: '@ViewBag.key',
+                Username: '@ViewBag.username',
+                comment: newComment
+            })
+        }
+        console.log(newPost);
+        fetch("/home/postComment", newPost).then((response) => response.json()).then(function (data) {
+            console.log(data);
+        });
+}
+    </script>
+
+}

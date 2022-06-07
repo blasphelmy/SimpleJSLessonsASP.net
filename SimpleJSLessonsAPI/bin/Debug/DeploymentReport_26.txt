@@ -1,0 +1,27 @@
+﻿** Highlights
+     Tables that will be rebuilt
+       None
+     Clustered indexes that will be dropped
+       None
+     Clustered indexes that will be created
+       None
+     Possible data issues
+       The type for column uploadedBy in table [dbo].[dataDataTable] is currently  VARCHAR (30) NULL but is being changed to 
+         VARCHAR (24) NULL. Data loss could occur and deployment may fail if the column contains data that is incompatible with
+         type  VARCHAR (24) NULL.
+
+** User actions
+     Alter
+       [dbo].[dataDataTable] (Table)
+     Create
+       [dbo].[CommentsTable] (Table)
+       [dbo].[reference_to_realuser_fromCommentsTable] (Foreign Key)
+
+** Supporting actions
+     Drop
+       [dbo].[uniqueImgToData] (Unique Constraint)
+     Create
+       [dbo].[uniqueImgToData] (Unique Constraint)
+
+The type for column uploadedBy in table [dbo].[dataDataTable] is currently  VARCHAR (30) NULL but is being changed to  VARCHAR (24) NULL. Data loss could occur and deployment may fail if the column contains data that is incompatible with type  VARCHAR (24) NULL.
+

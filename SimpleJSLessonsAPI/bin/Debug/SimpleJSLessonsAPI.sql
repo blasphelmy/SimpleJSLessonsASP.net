@@ -40,119 +40,120 @@ USE [$(DatabaseName)];
 
 
 GO
-/*
-The column [dbo].[apiUser].[dateCreated] on table [dbo].[apiUser] must be added, but the column has no default value and does not allow NULL values. If the table contains data, the ALTER script will not work. To avoid this issue you must either: add a default value to the column, mark it as allowing NULL values, or enable the generation of smart-defaults as a deployment option.
-*/
-
-IF EXISTS (select top 1 1 from [dbo].[apiUser])
-    RAISERROR (N'Rows were detected. The schema update is terminating because data loss might occur.', 16, 127) WITH NOWAIT
-
-GO
-PRINT N'Rename refactoring operation with key 1b02359b-3af4-471d-b8f2-99f9e3c7583a is skipped, element [dbo].[UserSavedDemos].[lessonHash] (SqlSimpleColumn) will not be renamed to demoHash';
+PRINT N'Rename refactoring operation with key c2cc0194-d326-4b9a-8c3b-4f8fda3bf0be is skipped, element [dbo].[DataTable].[public] (SqlSimpleColumn) will not be renamed to isPublic';
 
 
 GO
-PRINT N'Altering [dbo].[apiUser]...';
+PRINT N'Rename refactoring operation with key af476e26-774d-42ac-b208-fac1078f679e is skipped, element [dbo].[UserSavedDemos].[public] (SqlSimpleColumn) will not be renamed to isPublic';
+
+
+GO
+PRINT N'Dropping Foreign Key [dbo].[AuthorsToData]...';
+
+
+GO
+ALTER TABLE [dbo].[Authors] DROP CONSTRAINT [AuthorsToData];
+
+
+GO
+PRINT N'Altering Table [dbo].[apiUser]...';
 
 
 GO
 ALTER TABLE [dbo].[apiUser]
-    ADD [dateCreated] DATETIME NOT NULL;
+    ADD [profileData] VARCHAR (MAX) NULL;
 
 
 GO
-PRINT N'Altering [dbo].[apiUserInformation]...';
+PRINT N'Starting rebuilding table [dbo].[Authors]...';
 
 
 GO
-ALTER TABLE [dbo].[apiUserInformation]
-    ADD [email]        VARCHAR (64) NULL,
-        [ctclinkID]    VARCHAR (24) NULL,
-        [datemodified] DATETIME     NULL;
+BEGIN TRANSACTION;
 
+SET TRANSACTION ISOLATION LEVEL SERIALIZABLE;
 
-GO
-PRINT N'Altering [dbo].[userSavedLessons]...';
+SET XACT_ABORT ON;
 
-
-GO
-ALTER TABLE [dbo].[userSavedLessons] ALTER COLUMN [lessonHash] VARCHAR (24) NOT NULL;
-
-
-GO
-ALTER TABLE [dbo].[userSavedLessons]
-    ADD [lessonTitle] VARCHAR (128) NULL;
-
-
-GO
-PRINT N'Creating [dbo].[unique_lesson_to_user]...';
-
-
-GO
-ALTER TABLE [dbo].[userSavedLessons]
-    ADD CONSTRAINT [unique_lesson_to_user] UNIQUE NONCLUSTERED ([accountHash] ASC, [lessonHash] ASC);
-
-
-GO
-PRINT N'Creating [dbo].[Authors]...';
-
-
-GO
-CREATE TABLE [dbo].[Authors] (
-    [Id]           INT          NOT NULL,
+CREATE TABLE [dbo].[tmp_ms_xx_Authors] (
+    [Id]           INT          IDENTITY (1, 1) NOT NULL,
     [dataHash]     VARCHAR (24) NOT NULL,
     [username]     VARCHAR (20) NOT NULL,
     [dateAuthored] DATETIME     NOT NULL,
     PRIMARY KEY CLUSTERED ([Id] ASC)
 );
 
+IF EXISTS (SELECT TOP 1 1 
+           FROM   [dbo].[Authors])
+    BEGIN
+        SET IDENTITY_INSERT [dbo].[tmp_ms_xx_Authors] ON;
+        INSERT INTO [dbo].[tmp_ms_xx_Authors] ([Id], [dataHash], [username], [dateAuthored])
+        SELECT   [Id],
+                 [dataHash],
+                 [username],
+                 [dateAuthored]
+        FROM     [dbo].[Authors]
+        ORDER BY [Id] ASC;
+        SET IDENTITY_INSERT [dbo].[tmp_ms_xx_Authors] OFF;
+    END
+
+DROP TABLE [dbo].[Authors];
+
+EXECUTE sp_rename N'[dbo].[tmp_ms_xx_Authors]', N'Authors';
+
+COMMIT TRANSACTION;
+
+SET TRANSACTION ISOLATION LEVEL READ COMMITTED;
+
 
 GO
-PRINT N'Creating [dbo].[DataTable]...';
+PRINT N'Creating Table [dbo].[CommentsTable]...';
 
 
 GO
-CREATE TABLE [dbo].[DataTable] (
-    [Id]          INT           IDENTITY (1, 1) NOT NULL,
-    [dataHash]    VARCHAR (24)  NOT NULL,
-    [data]        VARCHAR (MAX) NOT NULL,
-    [title]       VARCHAR (128) NULL,
-    [dateCreated] DATETIME      NOT NULL,
-    PRIMARY KEY CLUSTERED ([Id] ASC),
-    UNIQUE NONCLUSTERED ([dataHash] ASC)
-);
-
-
-GO
-PRINT N'Creating [dbo].[SessionModel]...';
-
-
-GO
-CREATE TABLE [dbo].[SessionModel] (
-    [Id]          INT          IDENTITY (1, 1) NOT NULL,
-    [sessionID]   VARCHAR (64) NOT NULL,
-    [accountHash] VARCHAR (64) NOT NULL,
+CREATE TABLE [dbo].[CommentsTable] (
+    [Id]                    INT           IDENTITY (1, 1) NOT NULL,
+    [datahash]              VARCHAR (24)  NOT NULL,
+    [commentAuthorUsername] VARCHAR (30)  NOT NULL,
+    [comment]               VARCHAR (255) NOT NULL,
     PRIMARY KEY CLUSTERED ([Id] ASC)
 );
 
 
 GO
-PRINT N'Creating [dbo].[UserSavedDemos]...';
+PRINT N'Creating Table [dbo].[dataDataTable]...';
 
 
 GO
-CREATE TABLE [dbo].[UserSavedDemos] (
-    [ID]          INT           IDENTITY (1, 1) NOT NULL,
-    [accountHash] VARCHAR (64)  NOT NULL,
-    [demoHash]    VARCHAR (24)  NOT NULL,
-    [demoTitle]   VARCHAR (128) NULL,
-    PRIMARY KEY CLUSTERED ([ID] ASC),
-    CONSTRAINT [unique_demo_to_user] UNIQUE NONCLUSTERED ([accountHash] ASC, [demoHash] ASC)
+CREATE TABLE [dbo].[dataDataTable] (
+    [Id]         INT           IDENTITY (1, 1) NOT NULL,
+    [imageData]  VARCHAR (MAX) NOT NULL,
+    [dataHash]   VARCHAR (24)  NOT NULL,
+    [uploadedBy] VARCHAR (24)  NULL,
+    [title]      VARCHAR (128) NULL,
+    [isPublic]   INT           NOT NULL,
+    [uploadDate] DATE          NOT NULL,
+    PRIMARY KEY CLUSTERED ([Id] ASC),
+    CONSTRAINT [uniqueImgToData] UNIQUE NONCLUSTERED ([uploadedBy] ASC, [dataHash] ASC)
 );
 
 
 GO
-PRINT N'Creating [dbo].[AuthorsToData]...';
+PRINT N'Creating Table [dbo].[LikesTable]...';
+
+
+GO
+CREATE TABLE [dbo].[LikesTable] (
+    [Id]       INT          IDENTITY (1, 1) NOT NULL,
+    [dataHash] VARCHAR (24) NOT NULL,
+    [username] VARCHAR (30) NOT NULL,
+    PRIMARY KEY CLUSTERED ([Id] ASC),
+    CONSTRAINT [unique_likes] UNIQUE NONCLUSTERED ([dataHash] ASC, [username] ASC)
+);
+
+
+GO
+PRINT N'Creating Foreign Key [dbo].[AuthorsToData]...';
 
 
 GO
@@ -161,45 +162,38 @@ ALTER TABLE [dbo].[Authors] WITH NOCHECK
 
 
 GO
-PRINT N'Creating [dbo].[fk_SessionModel_to_apiUser]...';
+PRINT N'Creating Foreign Key [dbo].[reference_to_realuser_fromCommentsTable]...';
 
 
 GO
-ALTER TABLE [dbo].[SessionModel] WITH NOCHECK
-    ADD CONSTRAINT [fk_SessionModel_to_apiUser] FOREIGN KEY ([accountHash]) REFERENCES [dbo].[apiUser] ([accountHash]);
+ALTER TABLE [dbo].[CommentsTable] WITH NOCHECK
+    ADD CONSTRAINT [reference_to_realuser_fromCommentsTable] FOREIGN KEY ([commentAuthorUsername]) REFERENCES [dbo].[apiUser] ([username]);
 
 
 GO
-PRINT N'Creating [dbo].[fk_accountHash_to_user]...';
+PRINT N'Creating Foreign Key [dbo].[validDataReference]...';
 
 
 GO
-ALTER TABLE [dbo].[UserSavedDemos] WITH NOCHECK
-    ADD CONSTRAINT [fk_accountHash_to_user] FOREIGN KEY ([accountHash]) REFERENCES [dbo].[apiUser] ([accountHash]);
+ALTER TABLE [dbo].[dataDataTable] WITH NOCHECK
+    ADD CONSTRAINT [validDataReference] FOREIGN KEY ([dataHash]) REFERENCES [dbo].[DataTable] ([dataHash]);
 
 
 GO
-PRINT N'Creating [dbo].[fk_demohash_to_dataTable]...';
+PRINT N'Creating Foreign Key [dbo].[reference_to_realuser]...';
 
 
 GO
-ALTER TABLE [dbo].[UserSavedDemos] WITH NOCHECK
-    ADD CONSTRAINT [fk_demohash_to_dataTable] FOREIGN KEY ([demoHash]) REFERENCES [dbo].[DataTable] ([dataHash]);
-
-
-GO
-PRINT N'Creating [dbo].[fk_lessonHash_to_dataTable]...';
-
-
-GO
-ALTER TABLE [dbo].[userSavedLessons] WITH NOCHECK
-    ADD CONSTRAINT [fk_lessonHash_to_dataTable] FOREIGN KEY ([lessonHash]) REFERENCES [dbo].[DataTable] ([dataHash]);
+ALTER TABLE [dbo].[LikesTable] WITH NOCHECK
+    ADD CONSTRAINT [reference_to_realuser] FOREIGN KEY ([username]) REFERENCES [dbo].[apiUser] ([username]);
 
 
 GO
 -- Refactoring step to update target server with deployed transaction logs
-IF NOT EXISTS (SELECT OperationKey FROM [dbo].[__RefactorLog] WHERE OperationKey = '1b02359b-3af4-471d-b8f2-99f9e3c7583a')
-INSERT INTO [dbo].[__RefactorLog] (OperationKey) values ('1b02359b-3af4-471d-b8f2-99f9e3c7583a')
+IF NOT EXISTS (SELECT OperationKey FROM [dbo].[__RefactorLog] WHERE OperationKey = 'c2cc0194-d326-4b9a-8c3b-4f8fda3bf0be')
+INSERT INTO [dbo].[__RefactorLog] (OperationKey) values ('c2cc0194-d326-4b9a-8c3b-4f8fda3bf0be')
+IF NOT EXISTS (SELECT OperationKey FROM [dbo].[__RefactorLog] WHERE OperationKey = 'af476e26-774d-42ac-b208-fac1078f679e')
+INSERT INTO [dbo].[__RefactorLog] (OperationKey) values ('af476e26-774d-42ac-b208-fac1078f679e')
 
 GO
 
@@ -214,13 +208,11 @@ USE [$(DatabaseName)];
 GO
 ALTER TABLE [dbo].[Authors] WITH CHECK CHECK CONSTRAINT [AuthorsToData];
 
-ALTER TABLE [dbo].[SessionModel] WITH CHECK CHECK CONSTRAINT [fk_SessionModel_to_apiUser];
+ALTER TABLE [dbo].[CommentsTable] WITH CHECK CHECK CONSTRAINT [reference_to_realuser_fromCommentsTable];
 
-ALTER TABLE [dbo].[UserSavedDemos] WITH CHECK CHECK CONSTRAINT [fk_accountHash_to_user];
+ALTER TABLE [dbo].[dataDataTable] WITH CHECK CHECK CONSTRAINT [validDataReference];
 
-ALTER TABLE [dbo].[UserSavedDemos] WITH CHECK CHECK CONSTRAINT [fk_demohash_to_dataTable];
-
-ALTER TABLE [dbo].[userSavedLessons] WITH CHECK CHECK CONSTRAINT [fk_lessonHash_to_dataTable];
+ALTER TABLE [dbo].[LikesTable] WITH CHECK CHECK CONSTRAINT [reference_to_realuser];
 
 
 GO

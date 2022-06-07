@@ -69,6 +69,7 @@
     <Build Include="dbo\tables\dataDataTable.sql" />
     <Build Include="dbo\tables\apiUser.sql" />
     <Build Include="dbo\tables\LikesTable.sql" />
+    <Build Include="dbo\tables\CommentsTable.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="SimpleJSLessonsAPI.refactorlog" />

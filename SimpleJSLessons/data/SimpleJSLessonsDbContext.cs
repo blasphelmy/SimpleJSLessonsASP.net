@@ -19,6 +19,7 @@ namespace SimpleJSLessons.data
         public virtual DbSet<ApiUser> ApiUser { get; set; }
         public virtual DbSet<ApiUserInformation> ApiUserInformation { get; set; }
         public virtual DbSet<Authors> Authors { get; set; }
+        public virtual DbSet<CommentsTable> CommentsTable { get; set; }
         public virtual DbSet<DataDataTable> DataDataTable { get; set; }
         public virtual DbSet<DataTable> DataTable { get; set; }
         public virtual DbSet<LikesTable> LikesTable { get; set; }
@@ -90,6 +91,15 @@ namespace SimpleJSLessons.data
                     .HasForeignKey(d => d.DataHash)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("AuthorsToData");
+            });
+
+            modelBuilder.Entity<CommentsTable>(entity =>
+            {
+                entity.Property(e => e.Comment).IsUnicode(false);
+
+                entity.Property(e => e.CommentAuthorUsername).IsUnicode(false);
+
+                entity.Property(e => e.Datahash).IsUnicode(false);
             });
 
             modelBuilder.Entity<DataDataTable>(entity =>

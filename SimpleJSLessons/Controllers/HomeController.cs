@@ -47,13 +47,31 @@ namespace SimpleJSLessons.Controllers
             return null;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(string key)
         {
+            if (key != null || key != "")
+            {
+                UserSavedDemos thisDemo = context.UserSavedDemos.FirstOrDefault(demo => demo.DemoHash == key);
+                if(thisDemo != null)
+                {
+                    ViewBag.AuthoredBy = thisDemo.AccountHashNavigation.Username;
+                }
+                List<CommentsTable> thisComments = context.CommentsTable.FromSqlRaw($@"use SimpleJSLessonsAPIData
+                                                                                     select * from CommentsTable
+                                                                                     where datahash = '{key}'").ToList();
+                ViewBag.thisComments = thisComments;
+            }
             string cookieValueFromReq = Request.Cookies["sessionid"];
             if(cookieValueFromReq != null && getUser(cookieValueFromReq) != null)
             {
-                ViewBag.firstName = getUser(cookieValueFromReq).ApiUserInformation.FirstName;
+                ApiUser user = getUser(cookieValueFromReq);
+                ViewBag.firstName = user.ApiUserInformation.FirstName;
+                ViewBag.authorized = 1;
+                ViewBag.username = user.Username;
+                ViewBag.key = key;
+                return View();
             }
+            ViewBag.authorized = 0;
             return View();
         }
         public IActionResult myAccount()
@@ -358,6 +376,25 @@ namespace SimpleJSLessons.Controllers
             }
             PublicUserInformationModel requestedUser = new PublicUserInformationModel(context, username);
             return View(requestedUser);
+        }
+        [HttpPost]
+        public IActionResult postComment([FromBody] PostCommentModel newComment)
+        {
+            string cookieValueFromReq = Request.Cookies["sessionid"];
+            if(cookieValueFromReq != null && getUser(cookieValueFromReq) != null)
+            {
+                try
+                {
+                    context.Database.ExecuteSqlCommand($@"use SimpleJSLessonsAPIData
+                                                           insert into CommentsTable(datahash, commentAuthorUsername, comment, date)
+                                                           values({newComment.dataHash}, {newComment.Username}, {newComment.comment}, {DateTime.Now})");
+                }catch
+                {
+                    return Json(1);
+                }
+                return Json(0);
+            }
+            return Json(-1);
         }
         [HttpPost]
         public IActionResult updateInformation([FromBody] ChangeData changeData) //[0] = 1: change privacy 2: update title
