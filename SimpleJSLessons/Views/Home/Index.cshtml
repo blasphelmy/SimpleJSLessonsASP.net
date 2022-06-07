@@ -17,6 +17,8 @@
                 <input type="text" class="form-control" id="basic-url" value="@ViewBag.AuthoredBy" aria-describedby="basic-addon3">
             </div>
 
+            <div id="commentsList">
+
             @foreach (CommentsTable comment in ViewBag.thisComments)
             {
                 <div class="comment">
@@ -24,6 +26,7 @@
                     <p>@comment.Comment</p>
                 </div>
             }
+            </div>
 
             @if (ViewBag.authorized == 1)
             {
@@ -82,6 +85,13 @@
         console.log(newPost);
         fetch("/home/postComment", newPost).then((response) => response.json()).then(function (data) {
             console.log(data);
+            if(data === 0){
+                $("#commentsList").append($(`<div class="comment">
+                    <p><a href='/home/user?username=@ViewBag.username'>@ViewBag.username says</a></p>
+                    <p>${newComment}</p>
+                </div>`));
+            }
+            document.getElementById("submitcomment").value = "";
         });
 }
     </script>
