@@ -7,36 +7,36 @@
     </div>
     <div class="col-2">
 
-        <div style="position:relative; width:calc(100% + 15px); right: 15px; height: 100vh; padding:10px; padding-top: 55px; color: rgb(255, 245, 245); background-color:rgb(61, 61, 61);
+        <div class="noscroll" style="position:relative; width:calc(100% + 15px); right: 15px; height: 100vh; padding:10px; color: rgb(255, 245, 245); background-color:rgb(51, 51, 51);
                      overflow: scroll; padding-bottom: 100px;">
 
-            <div class="input-group mb-3">
+            <div class="input-group mb-3 input-group-sm">
                 <div class="input-group-prepend">
-                    <span class="input-group-text" id="basic-addon3" readonly>Created By</span>
+                    <span class="input-group-text" id="basic-addon3" style="opacity:.7">Created By</span>
                 </div>
-                <input type="text" class="form-control" id="basic-url" value="@ViewBag.AuthoredBy" aria-describedby="basic-addon3">
+                <input type="text" class="form-control" id="basic-url" value="@ViewBag.AuthoredBy" style="opacity:.7" aria-describedby="basic-addon3" readonly>
             </div>
 
             <div id="commentsList">
 
-            @foreach (CommentsTable comment in ViewBag.thisComments)
-            {
-                <div class="comment">
-                    <p><a href='/home/user?username=@comment.CommentAuthorUsername'>@comment.CommentAuthorUsername says on @comment.Date.ToShortTimeString()</a></p>
-                    <p>@comment.Comment</p>
-                </div>
-            }
-            </div>
-
-            @if (ViewBag.authorized == 1)
-            {
-                <div class="input-group input-group-sm">
-                    <textarea id="submitcomment" class="form-control" aria-label="With textarea" rows="2"></textarea>
-                    <div class="input-group-append">
-                        <button class="btn btn-outline-secondary btn-sm" type="button" onclick="submitComment()">Submit</button>
+                @foreach (CommentsTable comment in ViewBag.thisComments)
+                {
+                    <div class="comment">
+                        <p><a href='/home/user?username=@comment.CommentAuthorUsername'>@comment.CommentAuthorUsername says on @comment.Date.ToShortTimeString()</a></p>
+                        <p>@comment.Comment</p>
                     </div>
+                }
                 </div>
-            }
+
+                @if (ViewBag.authorized == 1)
+                {
+                    <div class="input-group input-group-sm">
+                        <textarea id="submitcomment" class="form-control" aria-label="With textarea" rows="2"></textarea>
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-secondary btn-sm" type="button" onclick="submitComment()">Submit</button>
+                        </div>
+                    </div>
+                }
 
             </div>
     </div>
@@ -50,9 +50,9 @@
     }
 
     .comment {
-        background: rgb(71, 71, 71);
-        border-radius: 8px;
-        margin-bottom: 20px;
+        border-bottom-width: 1px;
+        border-bottom-style: solid;
+        border-bottom-color: rgb(71, 71, 71);
         overflow-wrap: break-word;
     }
 
@@ -64,6 +64,18 @@
         .comment > p, h1, h2, h3 {
             padding: 10px;
             margin: 0;
+        }
+        .comment > p > a {
+            color:dodgerblue;
+        }
+        .noscroll::-webkit-scrollbar {
+            display: none!important;
+        }
+
+        /* Hide scrollbar for IE, Edge and Firefox */
+        .noscroll {
+            -ms-overflow-style: none!important;  /* IE and Edge */
+            scrollbar-width: none!important;  /* Firefox */
         }
 </style>
 @if (ViewBag.authorized == 1)

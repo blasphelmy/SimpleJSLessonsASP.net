@@ -1,7 +1,9 @@
 @model PublicUserInformationModel
 <link rel="stylesheet" href="~/css/masonaryEffect.css" />
 <br /><br />
-<h3>@Model.username authored demos</h3>
+<div style="margin: 30px">
+    <h3>@Model.username authored demos</h3>
+</div>
 <div class="container res" style="max-width:95%" data-masonry='{"percentPosition": true }'>
     @foreach (DataDataTable data in Model.AuthoredDemoed)
     {

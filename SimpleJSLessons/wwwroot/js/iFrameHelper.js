@@ -7,8 +7,8 @@ window.onload = function () {
     var offSet = document.getElementById("navBar").offsetHeight;
     //var offSet = document.getElementById("navBar").offsetHeight + document.getElementById("footer").offsetHeight;
     fillVerticalHeight(targetElement, offSet);
-    //targetElement.src = `https://blasphelmy.github.io/SimpleJSLessons/Interactive-JS-Lessons/?key=${currentLabID}&server=asp`;
-    targetElement.src = `http://127.0.0.1:5502/?key=${currentLabID}&server=asp`;
+    targetElement.src = `https://blasphelmy.github.io/SimpleJSLessons/Interactive-JS-Lessons/?key=${currentLabID}&server=asp`;
+    //targetElement.src = `http://127.0.0.1:5502/?key=${currentLabID}&server=asp`;
 }
 window.onresize = function () {
     var targetElement = document.getElementById("iFrameMain");
